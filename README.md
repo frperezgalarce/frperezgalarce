@@ -3,9 +3,9 @@
 
 - 🔭 I’m currently working on [Brave Up](https://www.linkedin.com/company/brave-up)
 
-- 🌱 I’m currently learning **cloud computing**
+- 🌱 I’m currently learning **survival modelling for Kidney Transplants**
 
-- 👯 I’m looking to collaborate on **applied machine learning and mathmatical programming**
+- 👯 I’m looking to collaborate on **applied machine learning and mathematical programming**
 
 - 🤝 I’m looking to research on **injecting human knowledge into machine learning models**
 
