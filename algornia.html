@@ -11,8 +11,8 @@
         function switchLanguage(language) {
             document.documentElement.lang = language;
             if (language === 'es') {
-                document.getElementById('content-en').style.display = 'none';
-                document.getElementById('content-es').style.display = 'block';
+                document.getElementById('algornia-summary').style.display = 'none';
+                document.getElementById('algornia-summaryes').style.display = 'block';
                 document.getElementById('hero-title-en').style.display = 'none';
                 document.getElementById('hero-title-es').style.display = 'block';
                 document.getElementById('hero-subtitle-en').style.display = 'none';
@@ -22,8 +22,8 @@
                 document.getElementById('nav-en').style.display = 'none';
                 document.getElementById('nav-es').style.display = 'flex';
             } else {
-                document.getElementById('content-es').style.display = 'none';
-                document.getElementById('content-en').style.display = 'block';
+                document.getElementById('algornia-summaryes').style.display = 'none';
+                document.getElementById('algornia-summary').style.display = 'block';
                 document.getElementById('hero-title-es').style.display = 'none';
                 document.getElementById('hero-title-en').style.display = 'block';
                 document.getElementById('hero-subtitle-es').style.display = 'none';
@@ -51,7 +51,7 @@
         <p id="hero-subtitle-en">Empowering businesses with advanced data-driven solutions</p>
         <p id="hero-subtitle-es" style="display:none;">Empoderando a las empresas con soluciones avanzadas basadas en datos</p>
         <a href="#algornia-summary" id="discover-btn-en" style="padding: 10px 20px; background-color: #0f0f0f; color: white; text-decoration: none; border-radius: 5px;">Discover Our Services</a>
-        <a href="#algornia-summary" id="discover-btn-es" style="padding: 10px 20px; background-color: #0f0f0f; color: white; text-decoration: none; border-radius: 5px; display:none;">Descubre Nuestros Servicios</a>
+        <a href="#algornia-summaryes" id="discover-btn-es" style="padding: 10px 20px; background-color: #0f0f0f; color: white; text-decoration: none; border-radius: 5px; display:none;">Descubre Nuestros Servicios</a>
     </section>
 
     <!-- Header -->
@@ -85,7 +85,7 @@
     </header>
 
     <!-- English Content -->
-    <section id="content-en" style="padding: 20px; line-height: 1.6;">
+    <section id="algornia-summary" style="padding: 20px; line-height: 1.6;">
         <h2>About AlgornIA</h2>
         <p>AlgornIA is an innovative initiative aimed at empowering businesses and organizations through advanced data-driven solutions. We offer three core service levels designed to meet the diverse needs of our clients:</p>
         
@@ -112,7 +112,7 @@
     </section>
 
     <!-- Spanish Content -->
-    <section id="content-es" style="padding: 20px; line-height: 1.6; display: none;">
+    <section id="algornia-summaryes" style="padding: 20px; line-height: 1.6; display: none;">
         <h2>Sobre AlgornIA</h2>
         <p>AlgornIA es una iniciativa innovadora destinada a potenciar a empresas y organizaciones a través de soluciones avanzadas basadas en datos. Ofrecemos tres niveles de servicio diseñados para satisfacer las diversas necesidades de nuestros clientes:</p>
         
