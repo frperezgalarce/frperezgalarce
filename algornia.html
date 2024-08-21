@@ -7,19 +7,59 @@
     <meta name="keywords" content="data science, machine learning, data analysis, education, tool development">
     <title>AlgornIA - A World of Solutions</title>
     <link rel="stylesheet" href="style.css">
+    <script>
+        function switchLanguage(language) {
+            document.documentElement.lang = language;
+            if (language === 'es') {
+                document.getElementById('content-en').style.display = 'none';
+                document.getElementById('content-es').style.display = 'block';
+                document.getElementById('hero-title-en').style.display = 'none';
+                document.getElementById('hero-title-es').style.display = 'block';
+                document.getElementById('hero-subtitle-en').style.display = 'none';
+                document.getElementById('hero-subtitle-es').style.display = 'block';
+                document.getElementById('discover-btn-en').style.display = 'none';
+                document.getElementById('discover-btn-es').style.display = 'block';
+                document.getElementById('nav-en').style.display = 'none';
+                document.getElementById('nav-es').style.display = 'flex';
+            } else {
+                document.getElementById('content-es').style.display = 'none';
+                document.getElementById('content-en').style.display = 'block';
+                document.getElementById('hero-title-es').style.display = 'none';
+                document.getElementById('hero-title-en').style.display = 'block';
+                document.getElementById('hero-subtitle-es').style.display = 'none';
+                document.getElementById('hero-subtitle-en').style.display = 'block';
+                document.getElementById('discover-btn-es').style.display = 'none';
+                document.getElementById('discover-btn-en').style.display = 'block';
+                document.getElementById('nav-es').style.display = 'none';
+                document.getElementById('nav-en').style.display = 'flex';
+            }
+        }
+    </script>
 </head>
 <body>
+
+    <!-- Language Switcher -->
+    <div style="text-align: right; padding: 10px;">
+        <button onclick="switchLanguage('en')">English</button>
+        <button onclick="switchLanguage('es')">Español</button>
+    </div>
+
     <!-- Hero Section -->
-    <section id="hero" style="padding: 50px; text-align: center; background-color: #f4f4f4;">
-        <h1>Welcome to AlgornIA</h1>
-        <p>Empowering businesses with advanced data-driven solutions</p>
-        <a href="#algornia-summary" style="padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Discover Our Services</a>
+    <section id="hero" style="padding: 300px; text-align: center; background-image: url('narniaback.webp'); background-size: cover; color: #0f0f0f;">
+        <h1 id="hero-title-en">Welcome to AlgornIA</h1>
+        <h1 id="hero-title-es" style="display:none;">Bienvenido a AlgornIA</h1>
+        <p id="hero-subtitle-en">Empowering businesses with advanced data-driven solutions</p>
+        <p id="hero-subtitle-es" style="display:none;">Empoderando a las empresas con soluciones avanzadas basadas en datos</p>
+        <a href="#algornia-summary" id="discover-btn-en" style="padding: 10px 20px; background-color: #0f0f0f; color: white; text-decoration: none; border-radius: 5px;">Discover Our Services</a>
+        <a href="#algornia-summary" id="discover-btn-es" style="padding: 10px 20px; background-color: #0f0f0f; color: white; text-decoration: none; border-radius: 5px; display:none;">Descubre Nuestros Servicios</a>
     </section>
 
-    <header style="margin-top: 20px;">
+    <!-- Header -->
+    <header style="margin-top: 20px; background-color: #0f0f0f;">
         <h1>AlgornIA - A World of Solutions</h1>
-        <nav>
-            <ul style="list-style: none; padding: 0; display: flex; justify-content: space-around;">
+        <!-- English Navigation -->
+        <nav id="nav-en" style="display: flex; justify-content: space-around;">
+            <ul style="list-style: none; padding: 0;">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="experience.html">Experience</a></li>
                 <li><a href="projects.html">Projects</a></li>
@@ -29,9 +69,23 @@
                 <li><a href="links.html">Links</a></li>
             </ul>
         </nav>
+
+        <!-- Spanish Navigation -->
+        <nav id="nav-es" style="display: none; justify-content: space-around;">
+            <ul style="list-style: none; padding: 0;">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="experience.html">Experiencia</a></li>
+                <li><a href="projects.html">Proyectos</a></li>
+                <li><a href="teaching.html">Enseñanza</a></li>
+                <li><a href="research.html">Investigación</a></li>
+                <li><a href="algornia.html">AlgornIA</a></li>
+                <li><a href="links.html">Enlaces</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <section id="algornia-summary" style="padding: 20px; line-height: 1.6;">
+    <!-- English Content -->
+    <section id="content-en" style="padding: 20px; line-height: 1.6;">
         <h2>About AlgornIA</h2>
         <p>AlgornIA is an innovative initiative aimed at empowering businesses and organizations through advanced data-driven solutions. We offer three core service levels designed to meet the diverse needs of our clients:</p>
         
@@ -41,23 +95,47 @@
                 <strong>Education:</strong>
                 <p>We provide comprehensive data science training to data science teams and advanced analytics professionals. Our educational programs are designed to build a strong foundation in data science, enabling teams to leverage the latest techniques and tools in their work.</p>
                 <img src="image2.webp" alt="Education Image" style="width:200px;height:auto; display:block; margin: 10px 0;">
-                <!-- <a href="contact.html" style="padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Learn More</a> -->
             </li>
             <li style="margin-bottom: 30px;">
                 <strong>Tool Development:</strong>
                 <p>Our team excels at creating robust data pipelines, training machine learning models, and deploying end-to-end solutions. We develop custom tools tailored to your business needs, ensuring seamless integration and scalability.</p>
                 <img src="image3.webp" alt="Tool Development Image" style="width:200px;height:auto; display:block; margin: 10px 0;">
-                <!-- <a href="contact.html" style="padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Get a Quote</a>-->
             </li>
             <li style="margin-bottom: 30px;">
                 <strong>Data Studies:</strong>
                 <p>We offer in-depth data analysis services to uncover valuable insights from your data. Our studies help organizations make informed decisions by providing actionable intelligence and strategic recommendations.</p>
                 <img src="image1.webp" alt="Data Studies Image" style="width:200px;height:auto; display:block; margin: 10px 0;">
-                <!-- <a href="contact.html" style="padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Contact Us</a>-->
             </li>
         </ul>
         <h3>Our Mission:</h3>
         <p>At AlgornIA, our mission is to democratize access to advanced data science and analytics capabilities. We aim to equip businesses of all sizes with the tools, knowledge, and insights needed to thrive in a data-driven world.</p>
+    </section>
+
+    <!-- Spanish Content -->
+    <section id="content-es" style="padding: 20px; line-height: 1.6; display: none;">
+        <h2>Sobre AlgornIA</h2>
+        <p>AlgornIA es una iniciativa innovadora destinada a potenciar a empresas y organizaciones a través de soluciones avanzadas basadas en datos. Ofrecemos tres niveles de servicio diseñados para satisfacer las diversas necesidades de nuestros clientes:</p>
+        
+        <h3>Nuestros Niveles de Servicio:</h3>
+        <ul style="list-style: none; padding: 0;">
+            <li style="margin-bottom: 30px;">
+                <strong>Educación:</strong>
+                <p>Ofrecemos una formación completa en ciencia de datos a equipos de ciencia de datos y profesionales de análisis avanzados. Nuestros programas educativos están diseñados para construir una sólida base en ciencia de datos, permitiendo a los equipos aprovechar las últimas técnicas y herramientas en su trabajo.</p>
+                <img src="image2.webp" alt="Imagen de Educación" style="width:200px;height:auto; display:block; margin: 10px 0;">
+            </li>
+            <li style="margin-bottom: 30px;">
+                <strong>Desarrollo de Herramientas:</strong>
+                <p>Nuestro equipo se destaca en la creación de robustos pipelines de datos, el entrenamiento de modelos de machine learning y el despliegue de soluciones de extremo a extremo. Desarrollamos herramientas personalizadas adaptadas a las necesidades de su negocio, asegurando una integración y escalabilidad sin problemas.</p>
+                <img src="image3.webp" alt="Imagen de Desarrollo de Herramientas" style="width:200px;height:auto; display:block; margin: 10px 0;">
+            </li>
+            <li style="margin-bottom: 30px;">
+                <strong>Estudios de Datos:</strong>
+                <p>Ofrecemos servicios de análisis de datos en profundidad para descubrir valiosas ideas a partir de sus datos. Nuestros estudios ayudan a las organizaciones a tomar decisiones informadas proporcionando inteligencia accionable y recomendaciones estratégicas.</p>
+                <img src="image1.webp" alt="Imagen de Estudios de Datos" style="width:200px;height:auto; display:block; margin: 10px 0;">
+            </li>
+        </ul>
+        <h3>Nuestra Misión:</h3>
+        <p>En AlgornIA, nuestra misión es democratizar el acceso a capacidades avanzadas de ciencia de datos y análisis. Nuestro objetivo es equipar a las empresas de todos los tamaños con las herramientas, conocimientos e ideas necesarias para prosperar en un mundo impulsado por los datos.</p>
     </section>
 
 </body>
