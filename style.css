@@ -3,10 +3,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f9f9f9;
+    background-color: #ffffff;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
 }
 
 #about img {
@@ -21,7 +21,7 @@
     max-width: 600px;
     font-size: 1.1em;
     line-height: 1.6;
-    color: green; /* Change to a shade of green */
+    color: rgb(7, 7, 7); /* Change to a shade of green */
 }
 
 
@@ -30,15 +30,15 @@ body {
     line-height: 1.7;
     margin: 0.5;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #ffffff;
 }
 
 header {
-    color: green; /* Change to a shade of green */
+    color: rgb(3, 3, 3); /* Change to a shade of green */
     color: #fff;
     padding: 10px 0;
     text-align: center;
-    background-color: green; /* Change to a shade of green */
+    background-color: rgb(7, 7, 7); /* Change to a shade of green */
 
 }
 
