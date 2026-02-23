@@ -11,12 +11,12 @@
             margin: 0;
             padding: 0;
             line-height: 1.6;
-            background-color: #f4f4f4;
+            background-color: #ffffff;
         }
 
         header {
             background: #222;
-            color: #fff;
+            color:#ffffff;
             padding: 20px 0;
             text-align: center;
         }
@@ -34,23 +34,24 @@
         }
 
         nav ul li a {
-            color: #fff;
+            color: #ffffff;
             text-decoration: none;
         }
-
         .hero {
             text-align: center;
-            padding: 40px;
-            background: #fff;
+            padding: 80px 20px;
+            background: #ffffff;
         }
 
         .hero img {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            margin-bottom: 15px;
+            width: 260px;              /* Better visual presence */
+            max-width: 90%;            /* Responsive safeguard */
+            height: auto;              /* Preserve aspect ratio */
+            object-fit: cover;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px #ffffff;
+            border-radius: 6px;        /* Subtle refinement */
         }
-
         .container {
             max-width: 1000px;
             margin: auto;
@@ -68,9 +69,9 @@
             background: white;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 4px 6px #ffffff;
             text-align: center;
-            border: 2px solid #ddd;
+            border: 2px solid #ffffff;
         }
 
         .card img {
@@ -110,26 +111,51 @@
         </nav>
     </header>
 
-    <section class="hero">
-        <img src="fco.jfif" alt="Francisco Pérez-Galarce">
+<section class="hero">
+    <div class="hero-overlay"></div>
+    
+    <div class="hero-content">
+        <div class="profile-wrapper">
+            <img src="Foto5g2.png" alt="Francisco Pérez-Galarce" class="profile-img">
+            <h1>Francisco Pérez-Galarce, PhD</h1>
+            <p class="subtitle">Machine Learning · Survival Analysis · Optimization</p>
+        </div>
+
         <div class="container">
             <div class="grid">
+                
                 <div class="card">
                     <h3>Research & Academia</h3>
-                    <p>I am a researcher and professor at the Faculty of Engineering and Business at the University of the Americas, holding a PhD in Engineering Sciences (Computer Science) from the Pontifical Catholic University of Chile. My research focuses on advanced machine learning techniques and survival modeling.</p>
+                    <p>
+                        Researcher and professor at the Faculty of Engineering and Business, 
+                        University of the Americas. PhD in Engineering Sciences (Computer Science) 
+                        from Pontificia Universidad Católica de Chile. 
+                        Research focused on advanced machine learning and survival modeling.
+                    </p>
                 </div>
+
                 <div class="card">
                     <h3>Industry Experience</h3>
-                    <p>With over a decade of experience leading advanced analytics projects, I have contributed to developing data-driven solutions in both research and industry. I specialize in predictive modeling, AI applications, and optimization.</p>
+                    <p>
+                        Over a decade leading advanced analytics initiatives across research 
+                        and industry. Specialized in predictive modeling, AI-driven solutions, 
+                        and optimization under uncertainty.
+                    </p>
                 </div>
-                <div class="card center-card">
+
+                <div class="card">
                     <h3>Teaching & Mentorship</h3>
-                    <p>Beyond my research, I have extensive experience teaching courses in optimization, logistics, Python programming, and machine learning. I am passionate about mentoring and guiding students toward excellence in data science.</p>
+                    <p>
+                        Extensive experience teaching optimization, logistics, Python, 
+                        and machine learning. Passionate about mentoring students and 
+                        supervising applied AI research projects.
+                    </p>
                 </div>
+
             </div>
         </div>
-    </section>
-    <br><br>
+    </div>
+</section>
 
     <footer>
         <p>&copy; 2024 Francisco Pérez Galarce. All rights reserved.</p>
