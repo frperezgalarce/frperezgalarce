@@ -265,17 +265,12 @@
     function translateResearch() {
         if (!document.body.classList.contains('research-page-body')) return;
         const headings = document.querySelectorAll('#research > h2');
-        if (headings[0]) headings[0].textContent = 'Líneas de investigación';
-        if (headings[1]) headings[1].textContent = 'Artículos en revistas';
-        if (headings[2]) headings[2].textContent = 'Conferencias y preprints';
+        if (headings[0]) headings[0].textContent = ' Artículos en revistas';
+        if (headings[1]) headings[1].textContent = 'Conferencias y preprints';
+        if (headings[2]) headings[2].textContent = '';
         const intro = document.querySelector('#research > h2 + p');
         if (intro) intro.textContent = 'Me interesan especialmente las siguientes áreas de investigación y estoy abierto a colaborar con quienes compartan estos intereses:';
         const lines = document.querySelectorAll('#research > ul:first-of-type > li');
-        const lineTranslations = [
-            '<strong>Sesgos e incertidumbre en aprendizaje automático:</strong> Desarrollo de técnicas que reduzcan sesgos y mejoren la equidad y robustez de las predicciones en entornos inciertos.',
-            '<strong>Modelos de optimización bajo incertidumbre:</strong> Creación de modelos para problemas complejos del mundo real que entreguen soluciones confiables y eficientes.',
-            '<strong>Analítica avanzada:</strong> Aplicación de métodos analíticos para resolver problemas complejos y producir resultados prácticos y de impacto.'
-        ];
         lines.forEach((line, index) => { if (lineTranslations[index]) line.innerHTML = lineTranslations[index]; });
         document.querySelectorAll('#research button').forEach(button => button.textContent = 'Mostrar/ocultar resumen');
         const graphHeading = document.querySelector('#collaboration-title');
