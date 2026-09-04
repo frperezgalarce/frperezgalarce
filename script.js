@@ -2,13 +2,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const graph = document.getElementById('collaboration-graph');
     if (!graph) return;
 
+    const isSpanish = window.siteLanguage === 'es';
     const me = 'Francisco Pérez-Galarce';
     const topics = {
-        health: { label: 'Health & survival', color: '#252525', x: 245, y: 220, rx: 210, ry: 175 },
-        astronomy: { label: 'Astronomy & ML', color: '#494949', x: 940, y: 205, rx: 205, ry: 160 },
-        optimization: { label: 'Optimization & networks', color: '#686868', x: 255, y: 660, rx: 225, ry: 175 },
-        analytics: { label: 'Applied analytics', color: '#858585', x: 670, y: 690, rx: 205, ry: 145 },
-        education: { label: 'Education & social networks', color: '#a3a3a3', x: 980, y: 620, rx: 185, ry: 170 }
+        health: { label: isSpanish ? 'Salud y supervivencia' : 'Health & survival', color: '#252525', x: 245, y: 220, rx: 210, ry: 175 },
+        astronomy: { label: isSpanish ? 'Astronomía y ML' : 'Astronomy & ML', color: '#494949', x: 940, y: 205, rx: 205, ry: 160 },
+        optimization: { label: isSpanish ? 'Optimización y redes' : 'Optimization & networks', color: '#686868', x: 255, y: 660, rx: 225, ry: 175 },
+        analytics: { label: isSpanish ? 'Analítica aplicada' : 'Applied analytics', color: '#858585', x: 670, y: 690, rx: 205, ry: 145 },
+        education: { label: isSpanish ? 'Educación y redes sociales' : 'Education & social networks', color: '#a3a3a3', x: 980, y: 620, rx: 185, ry: 170 }
     };
 
     // Every entry corresponds to one journal paper, conference contribution, or preprint below.
@@ -66,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const positions = buildPositions(collaborators);
     positions.set(me, { x: 600, y: 430 });
     const filters = document.getElementById('topic-filters');
-    addFilter('all', { label: 'All topics', color: '#111111' });
+    addFilter('all', { label: isSpanish ? 'Todos los temas' : 'All topics', color: '#111111' });
     Object.entries(topics).forEach(([key, topic]) => addFilter(key, topic));
 
     const regionLayer = svgElement('g', { class: 'network-regions' });
@@ -124,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function createNode(person, position) {
         const isMe = person.name === me;
         const primaryTopic = [...person.topics][0];
-        const group = svgElement('g', { class: `coauthor-node${isMe ? ' central-author' : ''}${person.topics.size > 1 ? ' cross-topic' : ''}`, transform: `translate(${position.x} ${position.y})`, tabindex: isMe ? '-1' : '0', role: isMe ? 'img' : 'button', 'aria-label': isMe ? `${me}, central author` : `${person.name}, ${person.count} shared ${person.count === 1 ? 'work' : 'works'}` });
+        const group = svgElement('g', { class: `coauthor-node${isMe ? ' central-author' : ''}${person.topics.size > 1 ? ' cross-topic' : ''}`, transform: `translate(${position.x} ${position.y})`, tabindex: isMe ? '-1' : '0', role: isMe ? 'img' : 'button', 'aria-label': isMe ? `${me}, ${isSpanish ? 'autor central' : 'central author'}` : `${person.name}, ${person.count} ${isSpanish ? 'trabajos compartidos' : `shared ${person.count === 1 ? 'work' : 'works'}`}` });
         group.dataset.name = person.name;
         group.dataset.topics = [...person.topics].join(' ');
         group.style.setProperty('--node-color', isMe ? '#17202a' : topics[primaryTopic].color);
@@ -178,7 +179,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const visiblePeople = collaborators.filter(person => key === 'all' || person.topics.has(key));
         const visibleTies = [...ties.values()].filter(tie => key === 'all' || tie.topics.has(key));
         updateStats(visiblePeople.length, visibleTies.length);
-        document.getElementById('collaborator-detail').innerHTML = `<p class="detail-kicker">Selected network</p><h3>${key === 'all' ? 'All topics' : topics[key].label}</h3><p>${visiblePeople.length} collaborators and ${visibleTies.length} coauthor ties are visible. Select a researcher to isolate their direct collaboration neighborhood.</p>`;
+        document.getElementById('collaborator-detail').innerHTML = isSpanish
+            ? `<p class="detail-kicker">Red seleccionada</p><h3>${key === 'all' ? 'Todos los temas' : topics[key].label}</h3><p>Se muestran ${visiblePeople.length} colaboradores y ${visibleTies.length} vínculos de coautoría. Seleccione una persona para aislar su red directa.</p>`
+            : `<p class="detail-kicker">Selected network</p><h3>${key === 'all' ? 'All topics' : topics[key].label}</h3><p>${visiblePeople.length} collaborators and ${visibleTies.length} coauthor ties are visible. Select a researcher to isolate their direct collaboration neighborhood.</p>`;
     }
 
     function selectPerson(person) {
@@ -199,7 +202,9 @@ document.addEventListener('DOMContentLoaded', function () {
             node.classList.toggle('is-selected', node.dataset.name === person.name);
         });
         const topicBadges = [...person.topics].map(key => `<span class="detail-topic" style="background:${topics[key].color}">${topics[key].label}</span>`).join('');
-        document.getElementById('collaborator-detail').innerHTML = `<p class="detail-kicker">Collaboration neighborhood</p><h3>${person.name}</h3><p><strong>${person.count}</strong> shared ${person.count === 1 ? 'work' : 'works'} with Francisco and <strong>${directTies}</strong> direct coauthor ties in this network.</p><div class="detail-topics">${topicBadges}</div><button type="button" class="reset-network" id="reset-network">Show complete network</button>`;
+        document.getElementById('collaborator-detail').innerHTML = isSpanish
+            ? `<p class="detail-kicker">Red de colaboración</p><h3>${person.name}</h3><p><strong>${person.count}</strong> ${person.count === 1 ? 'trabajo compartido' : 'trabajos compartidos'} con Francisco y <strong>${directTies}</strong> vínculos directos de coautoría.</p><div class="detail-topics">${topicBadges}</div><button type="button" class="reset-network" id="reset-network">Mostrar red completa</button>`
+            : `<p class="detail-kicker">Collaboration neighborhood</p><h3>${person.name}</h3><p><strong>${person.count}</strong> shared ${person.count === 1 ? 'work' : 'works'} with Francisco and <strong>${directTies}</strong> direct coauthor ties in this network.</p><div class="detail-topics">${topicBadges}</div><button type="button" class="reset-network" id="reset-network">Show complete network</button>`;
         document.getElementById('reset-network').addEventListener('click', () => filterTopic('all'));
     }
 

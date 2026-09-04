@@ -879,6 +879,31 @@ body.research-page-body #research > ul > li div p {
 /* Grayscale visual system */
 html { filter: grayscale(1); }
 
+.language-switcher {
+    position: fixed;
+    z-index: 1000;
+    top: 14px;
+    right: 14px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px;
+    color: #777;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid #bdbdbd;
+    border-radius: 999px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.14);
+    font: 700 0.76rem Arial, sans-serif;
+    letter-spacing: 0.06em;
+}
+.language-switcher a { color: #777; text-decoration: none; }
+.language-switcher a[aria-current="true"] { color: #050505; text-decoration: underline; text-underline-offset: 3px; }
+.language-switcher a:focus-visible { outline: 2px solid #111; outline-offset: 3px; }
+
+@media (max-width: 600px) {
+    .language-switcher { position: absolute; top: 8px; right: 8px; }
+}
+
 /* Technology transfer */
 .transfer-page-body {
     margin: 0;
