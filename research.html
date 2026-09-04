@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Francisco Pérez Galarce - Research</title>
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <style>
     /* Base styles */
@@ -123,7 +124,7 @@
         }
     }
 </style>
-<body>
+<body class="content-page research-page-body">
     <header>
         <h1>Francisco Pérez Galarce</h1>
         <p>Data Scientist | Researcher</p>
@@ -134,19 +135,48 @@
                 <li><a href="projects.html">Projects</a></li>
                 <li><a href="teaching.html">Teaching</a></li>
                 <li><a href="research.html">Research</a></li>
+                <li><a href="current-project.html">Current Project</a></li>
+                <li><a href="technology-transfer.html">Technology Transfer</a></li>
                 <li><a href="links.html">Links</a></li>
             </ul>
         </nav>
     </header>
 
-    <section id="research">
-        <h2>Research Lines</h2>
-        <p>I am highly interested in the following areas of research and am always eager to collaborate with others who share these interests:</p>
-        <ul>
-            <li><strong>Biases and uncertainty in Machine Learning:</strong> Focus on developing advanced machine learning techniques that address and reduce biases, improving the fairness and robustness of predictions in uncertain environments.</li>
-            <li><strong>Optimization models with uncertainty:</strong> Specialize in creating optimization models that tackle complex, real-world issues, accounting for uncertainty to provide reliable and efficient solutions.</li>
-            <li><strong>Advanced Analytics:</strong> Implement cutting-edge analytics to analyze and solve intricate problems in various real-world settings, ensuring practical and impactful outcomes.</li>
-        </ul>
+    <section id="research" class="text-page-section">
+        <section class="collaboration-section" aria-labelledby="collaboration-title">
+            <div class="collaboration-heading">
+                <div>
+                    <p class="eyebrow">Research network</p>
+                    <h2 id="collaboration-title">Collaborations by topic</h2>
+                    <p>Explore one coauthorship network built from the journal papers, conferences, and preprints listed below. Colored regions reveal topic communities, while links between researchers indicate shared work.</p>
+                </div>
+                <div class="collaboration-stats" aria-label="Collaboration summary">
+                    <span><strong id="collaborator-count">0</strong> collaborators</span>
+                    <span><strong id="connection-count">0</strong> coauthor ties</span>
+                </div>
+            </div>
+
+            <div class="topic-filters" id="topic-filters" aria-label="Filter collaborations by topic"></div>
+
+            <div class="collaboration-layout">
+                <div class="network-panel">
+                    <svg id="collaboration-graph" role="img" aria-labelledby="graph-title graph-description" viewBox="0 0 1200 860">
+                        <title id="graph-title">Complete research coauthorship network</title>
+                        <desc id="graph-description">One network connecting Francisco Pérez Galarce and all listed collaborators. Colored regions show research-topic subgraphs, and edges between collaborators indicate that they share a publication.</desc>
+                    </svg>
+                    <p class="graph-hint"><strong>Lines connect people who share a listed work.</strong> Node size reflects publication frequency. Dark-outlined nodes bridge multiple topics; select a person to highlight their direct collaborators.</p>
+                </div>
+                <aside class="collaborator-detail" id="collaborator-detail" aria-live="polite">
+                    <p class="detail-kicker">Selected view</p>
+                    <h3>All topics</h3>
+                    <p>Select a collaborator to see their shared research topics and publication count.</p>
+                </aside>
+            </div>
+
+            <noscript>
+                <p class="graph-fallback">This interactive map requires JavaScript. The publication list below contains the complete collaboration record.</p>
+            </noscript>
+        </section>
 
         <h2>Journal papers</h2>
         <ul>
