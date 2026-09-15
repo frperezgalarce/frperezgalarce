@@ -1,10 +1,11 @@
 (function () {
     const requestedLanguage = new URLSearchParams(window.location.search).get('lang');
-    const savedLanguage = localStorage.getItem('site-language');
-    const language = requestedLanguage === 'es' || requestedLanguage === 'en' ? requestedLanguage : (savedLanguage || 'en');
+    let savedLanguage;
+    try { savedLanguage = localStorage.getItem('site-language'); } catch (_) { /* Language links work without storage. */ }
+    const language = requestedLanguage === 'es' || requestedLanguage === 'en' ? requestedLanguage : (savedLanguage === 'en' || savedLanguage === 'es' ? savedLanguage : 'es');
     window.siteLanguage = language;
     document.documentElement.lang = language;
-    localStorage.setItem('site-language', language);
+    try { localStorage.setItem('site-language', language); } catch (_) { /* Storage is optional. */ }
 
     document.addEventListener('DOMContentLoaded', function () {
         addLanguageSwitch();
@@ -15,9 +16,8 @@
         translateExperience();
         translateProjects();
         translateTeaching();
-        translateHome();
         translateResearch();
-        translateLinks();
+        // Contact content uses explicit bilingual labels in site.js.
         document.title = document.title
             .replace('Home', 'Inicio')
             .replace('Experience', 'Experiencia')
@@ -34,15 +34,15 @@
         switcher.className = 'language-switcher';
         switcher.setAttribute('aria-label', language === 'es' ? 'Seleccionar idioma' : 'Select language');
         const page = window.location.pathname.split('/').pop() || 'index.html';
-        switcher.innerHTML = `<a href="${page}?lang=en" lang="en"${language === 'en' ? ' aria-current="true"' : ''}>EN</a><span aria-hidden="true">/</span><a href="${page}?lang=es" lang="es"${language === 'es' ? ' aria-current="true"' : ''}>ES</a>`;
-        document.body.appendChild(switcher);
+        switcher.innerHTML = `<a href="${page}?lang=en${window.location.hash}" lang="en"${language === 'en' ? ' aria-current="true"' : ''}>EN</a><span aria-hidden="true">/</span><a href="${page}?lang=es${window.location.hash}" lang="es"${language === 'es' ? ' aria-current="true"' : ''}>ES</a>`;
+        (document.getElementById('language-slot') || document.body).appendChild(switcher);
     }
 
     function translateCommon() {
         const nav = {
             'index.html': 'Inicio',
-            'experience.html': 'Experiencia',
-            'projects.html': 'Proyectos',
+            'experience.html': 'Trayectoria',
+            'projects.html': 'Proyectos aplicados',
             'teaching.html': 'Docencia',
             'research.html': 'Investigación',
             'current-project.html': 'Proyecto actual',
@@ -168,7 +168,7 @@
     function translateExperience() {
         if (!document.body.classList.contains('experience-page')) return;
         setText('.section-eyebrow', 'Trayectoria profesional');
-        setText('.text-page-intro h2', 'Experiencia');
+        setText('.text-page-intro h1', 'Trayectoria');
         setText('.text-page-intro > p:last-child', 'Investigación académica, ciencia de datos aplicada y liderazgo analítico en salud, astronomía, educación, energía y agroindustria.');
         const titles = [
             'Profesor Asistente. Facultad de Ingeniería y Negocios. Universidad de Las Américas (marzo de 2025 - presente)',
@@ -177,7 +177,7 @@
             'Jefe de Analítica Avanzada - Brave Up (2022 - junio de 2024)',
             'Científico de Datos Senior - Brave Up (enero de 2022 - 2024)',
             'Científico de Datos - Lipigas Empresas (2020 - 2021)',
-            'Estudiante de Doctorado - Departamento de Ciencia de la Computación, PUC Chile (marzo de 2017 - presente)',
+            'Investigación doctoral - Departamento de Ciencia de la Computación, PUC Chile',
             'Ingeniero de I+D - CEAP (2014 - 2016)',
             'Ingeniero de Proyecto - CCMaule, Facultad de Economía, Universidad de Talca (2013 - 2014)'
         ];
@@ -201,7 +201,7 @@
     function translateProjects() {
         if (!document.body.classList.contains('projects-page')) return;
         setText('.section-eyebrow', 'Trabajo seleccionado');
-        setText('.text-page-intro h2', 'Proyectos relevantes');
+        setText('.text-page-intro h1', 'Investigación y proyectos aplicados');
         setText('.text-page-intro > p:last-child', 'Iniciativas de investigación y aplicación donde el aprendizaje automático, la optimización y la analítica apoyan decisiones en contextos complejos.');
         const titles = [
             'Aprendizaje automático justo y explicable para predecir supervivencia en trasplante renal (2026-2029)',
@@ -230,35 +230,42 @@
     function translateTeaching() {
         if (!document.body.classList.contains('teaching-page')) return;
         setText('.section-eyebrow', 'Docencia y mentoría');
-        setText('.text-page-intro h2', 'Docencia');
+        setText('.text-page-intro h1', 'Docencia');
         setText('.text-page-intro > p:last-child', 'Me apasiona enseñar y compartir conocimiento. Mi enfoque busca hacer accesibles y prácticos los conceptos complejos para que los estudiantes puedan aplicarlos en situaciones reales.');
-        const headings = ['Profesor Asistente', 'Profesor Adjunto', 'Supervisión', 'Cursos breves', 'Ayudantías'];
+        const headings = ['Profesor Asistente', 'Profesor Adjunto', 'Supervisión'];
         document.querySelectorAll('#teaching > h3').forEach((heading, index) => {
             const number = heading.querySelector('span');
             heading.lastChild.textContent = ` ${headings[index]}`;
             if (number) heading.prepend(number);
         });
-        const phrasePairs = [
-            ['Machine Learning I', 'Aprendizaje Automático I'], ['Machine Learning II', 'Aprendizaje Automático II'],
-            ['Operations Research', 'Investigación de Operaciones'], ['Operations Management', 'Gestión de Operaciones'],
-            ['Statistics and Probability', 'Estadística y Probabilidad'], ['Artificial Intelligence', 'Inteligencia Artificial'],
-            ['Data Science', 'Ciencia de Datos'], ['Deterministic Models', 'Modelos Deterministas'],
-            ['Stochastic Processes and Simulation', 'Procesos Estocásticos y Simulación'],
-            ['Optimization Methods', 'Métodos de Optimización'], ['Operations and Logistics', 'Operaciones y Logística'],
-            ['Business Processes', 'Procesos de Negocio'], ['Bachelor\'s Project', 'Proyecto de Título'],
-            ['Short Courses', 'Cursos breves'], ['Teaching Assistant', 'Ayudantías'],
-            ['Data Mining', 'Minería de Datos'], ['Finance', 'Finanzas']
-        ];
-        walkText(document.querySelector('#teaching'), text => phrasePairs.reduce((value, pair) => value.replaceAll(pair[0], pair[1]), text));
-    }
-
-    function translateHome() {
-        const hero = document.querySelector('.hero-content');
-        if (!hero) return;
-        const subtitle = hero.querySelector('.subtitle');
-        if (subtitle) subtitle.textContent = 'Aprendizaje Automático · Análisis de Supervivencia · Optimización';
-        [...hero.childNodes].filter(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim()).forEach(node => {
-            node.textContent = '\n Profesor Asistente en la Facultad de Ingeniería y Negocios de la Universidad de Las Américas, Chile. Doctor en Ciencias de la Computación por la Pontificia Universidad Católica de Chile y Magíster en Gestión de Operaciones por la Universidad de Talca. Con más de una década liderando proyectos de analítica avanzada en academia e industria, desarrollo y aplico métodos innovadores basados en datos para abordar problemas complejos en diversos dominios.\n';
+        const courses = [
+            "Aprendizaje Automático I. Facultad de Ingeniería y Negocios. Universidad de Las Américas.",
+            "Aprendizaje Automático II. Magíster en Ciencia de Datos. Facultad de Ingeniería y Negocios. Universidad de Las Américas.",
+            "Investigación de Operaciones. Escuela de Ingeniería. Facultad de Ingeniería y Negocios. Universidad de Las Américas.",
+            "Gestión de Operaciones. Escuela de Ingeniería. Facultad de Ingeniería y Negocios. Universidad de Las Américas.",
+            "Estadística y Probabilidad. IMFE. Facultad de Ingeniería y Negocios. Universidad de Las Américas.",
+            "Inteligencia Artificial y Ciencia de Datos con Python. Educación Profesional UC, Facultad de Ingeniería, Pontificia Universidad Católica de Chile.",
+            "Python para Machine Learning (en línea). Educación Profesional UC, Facultad de Ingeniería, Pontificia Universidad Católica de Chile.",
+            "Inteligencia Artificial. Facultad de Ingeniería, Universidad Santo Tomás.",
+            "Modelos Deterministas. Facultad de Ingeniería, Universidad Santo Tomás.",
+            "Procesos Estocásticos y Simulación. Facultad de Ingeniería, Universidad Santo Tomás.",
+            "Resolución de Modelos de Gran Escala en Investigación de Operaciones. Facultad de Ingeniería, Universidad de Talca.",
+            "Métodos de Optimización. Facultad de Economía, Universidad de Talca.",
+            "Operaciones y Logística. Facultad de Economía, Universidad de Talca.",
+            "Simulación de Procesos de Negocio. Facultad de Ingeniería, Universidad Autónoma de Chile.",
+            "Proyecto de Título. Facultad de Ingeniería, Universidad de Talca.",
+            "Enrique Esis Sulbarán, Magíster en Ciencia de Datos, Universidad de Las Américas (cosupervisión con R. Coronado). Predicción de cortes de energía en la Región Metropolitana mediante modelos de series de tiempo y Machine Learning para apoyar la planificación de cuadrillas.",
+            "Jorge Cáceres Barrales, Magíster en Ciencia de Datos, Universidad de Las Américas (cosupervisión con C. Pieringer). Estimación de la propensión de clientes a aceptar aumentos del límite de sus tarjetas de crédito mediante modelos de Machine Learning.",
+            "Daniela Fuentealba Dote, Ingeniería Industrial, Universidad de Talca. Estudio de pérdidas en el sistema de refrigeración de COEXCA S.A.",
+            "Marcelo Aguilera, Ingeniería Industrial, Universidad de Talca. Plan de implementación de TPM para aumentar la disponibilidad de equipos mediante manufactura esbelta en Codelco Chile, División El Teniente.",
+            "Cristian Catalán, Ingeniería Industrial, Universidad de Talca. Aplicación de herramientas de manufactura esbelta para aumentar el tiempo efectivo en obras civiles de desarrollos mineros en Codelco Chile, División El Teniente.",
+            "David Revillot, tesis de Magíster en Gestión de Operaciones, Universidad de Talca (cosupervisión con E. Álvarez-Miranda). Modelos y algoritmos para la gestión de almacenamiento de congelados.",
+            "Celso Herrera, tesis de Magíster en Gestión de Operaciones, Universidad de Talca (cosupervisión con A. Candia-Véjar). Optimización de la planificación de cosecha en la producción de aceite de oliva."
+];
+        document.querySelectorAll('#teaching > ul > li').forEach((item, index) => {
+            if (!courses[index]) return;
+            const date = item.querySelector('strong');
+            item.replaceChildren(date, document.createTextNode(' ' + courses[index]));
         });
     }
 
@@ -267,11 +274,6 @@
         const headings = document.querySelectorAll('#research > h2');
         if (headings[0]) headings[0].textContent = ' Artículos en revistas';
         if (headings[1]) headings[1].textContent = 'Conferencias y preprints';
-        if (headings[2]) headings[2].textContent = '';
-        const intro = document.querySelector('#research > h2 + p');
-        if (intro) intro.textContent = 'Me interesan especialmente las siguientes áreas de investigación y estoy abierto a colaborar con quienes compartan estos intereses:';
-        const lines = document.querySelectorAll('#research > ul:first-of-type > li');
-        lines.forEach((line, index) => { if (lineTranslations[index]) line.innerHTML = lineTranslations[index]; });
         document.querySelectorAll('#research button').forEach(button => button.textContent = 'Mostrar/ocultar resumen');
         const graphHeading = document.querySelector('#collaboration-title');
         if (graphHeading) graphHeading.textContent = 'Colaboraciones por tema';
@@ -282,23 +284,6 @@
         const statSpans = document.querySelectorAll('.collaboration-stats span');
         if (statSpans[0]) statSpans[0].lastChild.textContent = ' colaboradores';
         if (statSpans[1]) statSpans[1].lastChild.textContent = ' vínculos de coautoría';
-    }
-
-    function translateLinks() {
-        const section = document.querySelector('#links');
-        if (!section) return;
-        const headings = section.querySelectorAll('h2');
-        if (headings[0]) headings[0].textContent = 'Conversemos';
-        if (headings[1]) headings[1].textContent = 'Enlaces';
-        const intro = section.querySelector('p');
-        if (intro) intro.textContent = 'Si desea conocer novedades sobre mi trabajo o tiene alguna pregunta, puede contactarme en redes sociales o escribir a frperezga@gmail.com o fperezg@udla.cl.';
-        const linkLabels = ['Perfil de LinkedIn', 'Perfil de Google Scholar', 'GitHub', 'Perfil ORCID', 'Python para Aprendizaje Automático'];
-        section.querySelectorAll('a').forEach((link, index) => {
-            const image = link.querySelector('img');
-            if (image && linkLabels[index]) {
-                [...link.childNodes].filter(node => node.nodeType === Node.TEXT_NODE).forEach(node => node.textContent = ` ${linkLabels[index]}`);
-            }
-        });
     }
 
     function setText(selector, value) {

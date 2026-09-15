@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const isSpanish = window.siteLanguage === 'es';
     const me = 'Francisco Pérez-Galarce';
     const topics = {
-        health: { label: isSpanish ? 'Salud y supervivencia' : 'Health & survival', color: '#252525', x: 245, y: 220, rx: 210, ry: 175 },
-        astronomy: { label: isSpanish ? 'Astronomía y ML' : 'Astronomy & ML', color: '#494949', x: 940, y: 205, rx: 205, ry: 160 },
-        optimization: { label: isSpanish ? 'Optimización y redes' : 'Optimization & networks', color: '#686868', x: 255, y: 660, rx: 225, ry: 175 },
-        analytics: { label: isSpanish ? 'Analítica aplicada' : 'Applied analytics', color: '#858585', x: 670, y: 690, rx: 205, ry: 145 },
-        education: { label: isSpanish ? 'Educación y redes sociales' : 'Education & social networks', color: '#a3a3a3', x: 980, y: 620, rx: 185, ry: 170 }
+        health: { label: isSpanish ? 'Salud y supervivencia' : 'Health & survival', color: '#20665f', x: 245, y: 220, rx: 210, ry: 175 },
+        astronomy: { label: isSpanish ? 'Astronomía y ML' : 'Astronomy & ML', color: '#405879', x: 940, y: 205, rx: 205, ry: 160 },
+        optimization: { label: isSpanish ? 'Optimización y redes' : 'Optimization & networks', color: '#845b34', x: 255, y: 660, rx: 225, ry: 175 },
+        analytics: { label: isSpanish ? 'Analítica aplicada' : 'Applied analytics', color: '#63557e', x: 670, y: 690, rx: 205, ry: 145 },
+        education: { label: isSpanish ? 'Educación y redes sociales' : 'Education & social networks', color: '#7a454b', x: 980, y: 620, rx: 185, ry: 170 }
     };
 
     // Every entry corresponds to one journal paper, conference contribution, or preprint below.
