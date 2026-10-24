@@ -83,12 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
         'links.html': ['Contacto', 'Contact'],
         'current-project.html': ['Proyecto de investigación actual', 'Current research project'],
         'technology-transfer.html': ['Transferencia tecnológica', 'Technology transfer'],
-        'algornia.html': ['AlgornIA', 'AlgornIA']
+        'algornia.html': ['AlgornIA', 'AlgornIA'],
+        'machine-learning.html': ['Laboratorio de Machine Learning', 'Machine learning lab']
     };
     const page = location.pathname.split('/').pop() || 'index.html';
     if (titles[page]) document.title = titles[page][language === 'es' ? 0 : 1] + ' · Francisco Pérez-Galarce';
     const spanishDescriptions = {
     "index.html": "Investigación en Machine Learning explicable y justo, análisis de supervivencia y apoyo a decisiones. Francisco Pérez-Galarce, PhD.",
+    "machine-learning.html": "Compara las fronteras de clasificación binaria de regresión logística, vecinos más cercanos, árboles de decisión y Gaussian Naive Bayes.",
     "research.html": "Investigación y publicaciones sobre Machine Learning, explicabilidad, equidad, análisis de supervivencia y optimización.",
     "projects.html": "Proyectos de investigación y aplicación en Machine Learning, optimización y sistemas de apoyo a decisiones.",
     "experience.html": "Trayectoria académica y experiencia en ciencia de datos aplicada en salud, astronomía, educación, energía y agroindustria.",

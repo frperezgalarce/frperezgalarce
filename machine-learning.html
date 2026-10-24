@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Machine learning lab · Francisco Pérez-Galarce</title>
+<meta name="description" content="Compare binary classification decision boundaries from logistic regression, nearest neighbors, a decision tree and Gaussian Naive Bayes.">
+<link rel="stylesheet" href="style.css?v=6e9d50e48b12">
+<link rel="stylesheet" href="features.css?v=1">
+<script src="i18n.js?v=eff3776d279e" defer></script>
+<script src="site.js?v=features1" defer></script>
+<script src="ml-engine.js?v=1" defer></script>
+<script src="ml.js?v=1" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main-content" data-es="Saltar al contenido">Skip to content</a>
+<header class="site-header"><div class="wrap nav"><a class="brand" href="index.html">Francisco Pérez-Galarce<small data-es="Machine Learning · Investigación">Machine Learning · Research</small></a><div class="nav-controls"><nav aria-label="Main navigation"><a href="index.html" data-es="Inicio">Home</a><a href="research.html" data-es="Investigación">Research</a><a href="projects.html" data-es="Proyectos aplicados">Applied projects</a><a href="teaching.html" data-es="Docencia">Teaching</a><a href="playground.html" data-es="Laboratorio" aria-current="page">Playground</a><a href="links.html" data-es="Contacto">Contact</a></nav><div id="language-slot"></div></div></div></header>
+<main id="main-content" class="wrap feature-main">
+
+<nav class="lab-tabs" aria-label="Playgrounds"><a href="playground.html" data-es="Optimización">Optimization</a><a href="machine-learning.html" aria-current="page" data-es="Machine Learning">Machine Learning</a></nav>
+<section class="feature-intro">
+<p class="eyebrow" data-es="Aprende experimentando · Clasificación binaria">Learn by doing · Binary classification</p>
+<h1 data-es="Mismos datos. Distintas fronteras.">Same data. Different boundaries.</h1>
+<p data-es="Explora cómo cuatro modelos aprenden a separar dos clases. Cambia la forma de los datos, agrega ruido y compara sus regiones de decisión.">Explore how four models learn to separate two classes. Change the shape of the data, add noise, and compare their decision regions.</p>
+</section>
+<form id="ml-form" class="ml-controls" aria-label="Experiment settings">
+<div class="ml-fields">
+<div><label for="dataset" data-es="Forma de los datos">Dataset shape</label><select id="dataset"><option value="linear" data-es="Dos grupos">Two clusters</option><option value="moons" selected data-es="Dos lunas">Two moons</option><option value="circles" data-es="Círculos concéntricos">Concentric circles</option><option value="xor" data-es="XOR · Cuadrantes opuestos">XOR · Opposite quadrants</option></select></div>
+<div><label for="samples" data-es="Observaciones">Observations</label><select id="samples"><option value="100">100</option><option value="200" selected>200</option><option value="400">400</option></select></div>
+<div><label for="noise" data-es="Ruido (desviación estándar)">Noise (standard deviation)</label><select id="noise"><option value="0" data-es="Sin ruido adicional">No added noise</option><option value="0.12" selected>0.12</option><option value="0.25">0.25</option><option value="0.4">0.40</option></select></div>
+<div><label for="ml-seed" data-es="Semilla aleatoria">Random seed</label><input id="ml-seed" type="number" min="0" max="999999" step="1" value="42" required></div>
+</div>
+<details><summary data-es="Parámetros de los modelos">Model parameters</summary><div class="ml-fields">
+<div><label for="penalty" data-es="Logística · Penalización L2">Logistic · L2 penalty</label><select id="penalty"><option value="0.001">0.001</option><option value="0.02" selected>0.02</option><option value="0.2">0.2</option><option value="1">1</option></select></div>
+<div><label for="neighbors" data-es="Vecinos · k">Neighbors · k</label><select id="neighbors"><option value="1">1</option><option value="3">3</option><option value="7" selected>7</option><option value="15">15</option><option value="25">25</option></select></div>
+<div><label for="depth" data-es="Árbol · Profundidad máxima">Tree · Maximum depth</label><select id="depth"><option value="1">1</option><option value="2">2</option><option value="4" selected>4</option><option value="6">6</option><option value="8">8</option></select></div>
+</div></details>
+<div class="ml-actions"><button class="feature-button" id="train-models" type="submit" data-es="Entrenar y comparar">Train &amp; compare</button><p id="ml-status" class="ml-status" role="status" aria-live="polite"></p></div>
+</form>
+<div class="plot-legend"><span class="class-zero" data-es="● Círculos · Clase 0">● Circles · Class 0</span><span class="class-one" data-es="■ Cuadrados · Clase 1">■ Squares · Class 1</span><span data-es="Rellenos: entrenamiento · Vacíos: prueba">Filled: training · Hollow: test</span></div>
+<p class="plot-help" data-es="El fondo indica la clase predicha, con una línea en los cambios de clase. Cada gráfico usa los mismos datos y ejes. Las cifras muestran la exactitud de clasificación.">The background shows the predicted class, with a line where that class changes. Every plot uses the same data and axes. Scores show classification accuracy.</p>
+<section class="model-grid" id="model-grid" aria-label="Model comparison"></section>
+<section class="feature-note"><h2 data-es="Qué observar">What to look for</h2>
+<p data-es="Una recta puede separar dos grupos, pero no suele describir lunas o círculos. Los métodos locales y los árboles pueden aprender formas más complejas. Una frontera más detallada no siempre generaliza mejor: compara la exactitud de entrenamiento y de prueba al aumentar el ruido o la profundidad.">A straight line can separate two clusters, but usually cannot describe moons or circles. Local methods and trees can learn more complex shapes. A more detailed boundary does not always generalize better: compare training and test accuracy as you increase noise or depth.</p>
+<p data-es="Se reserva el 30% de cada clase para prueba; los modelos solo usan el 70% restante para entrenar. La misma semilla reproduce el conjunto y la partición. Esta es una demostración educativa con datos sintéticos, una sola partición y fronteras aproximadas en una grilla. La regresión logística usa 900 pasos de descenso de gradiente; el árbol usa divisiones Gini y al menos dos observaciones por hoja.">30% of each class is held out for testing; models train only on the remaining 70%. The same seed reproduces the data and split. This is an educational demonstration with synthetic data, one split, and boundaries approximated on a grid. Logistic regression uses 900 gradient-descent steps; the tree uses Gini splits and at least two observations per leaf.</p>
+</section>
+<noscript><p>This lab requires JavaScript. / Este laboratorio requiere JavaScript.</p></noscript>
+</main>
+<footer class="site-footer"><div class="wrap"><div><a class="footer-name" href="index.html">Francisco Pérez-Galarce</a><p data-es="Investigación en Machine Learning explicable y justo.">Research in explainable and fair Machine Learning.</p><span>© 2026 Francisco Pérez-Galarce</span></div><div class="footer-links"><a href="teaching.html" data-es="Docencia">Teaching</a><a href="research.html" data-es="Investigación">Research</a><a href="projects.html" data-es="Proyectos aplicados">Applied projects</a></div><div class="footer-links"><a href="https://github.com/frperezgalarce">GitHub ↗</a><a href="links.html" data-es="Contacto">Contact</a></div></div></footer>
+</body>
+</html>

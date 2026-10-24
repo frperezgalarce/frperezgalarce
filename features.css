@@ -1,0 +1,35 @@
+.feature-main { padding-top: 48px; padding-bottom: 48px; }
+.feature-intro { max-width: 780px; margin-bottom: 30px; }
+.feature-intro h1 { margin-bottom: 18px; }
+.feature-intro > p:last-child { color: var(--muted); font-size: 18px; }
+.lab-tabs { display: flex; flex-wrap: wrap; gap: 12px 24px; border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 32px; font-size: 14px; }
+.lab-tabs [aria-current] { font-weight: 650; text-decoration: underline; text-underline-offset: 7px; }
+.ml-controls { padding: 24px; background: var(--surface); border: 1px solid var(--line); }
+.ml-fields { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; }
+.ml-controls label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+.ml-controls input,.ml-controls select { width: 100%; min-height: 42px; background: var(--paper); color: var(--ink); border: 1px solid #a7bcb3; padding: 8px 10px; font: inherit; border-radius: 0; }
+.ml-controls input:focus-visible,.ml-controls select:focus-visible { outline: 3px solid #ac7841; outline-offset: 2px; }
+.ml-controls details { margin-top: 18px; font-size: 14px; }
+.ml-controls details .ml-fields { margin-top: 16px; grid-template-columns: repeat(3,minmax(0,1fr)); }
+.ml-actions { display: flex; align-items: center; gap: 20px; margin-top: 20px; }
+.feature-button { background: var(--accent); color: white; border: 1px solid var(--accent); padding: 10px 20px; font: inherit; font-size: 14px; }
+.feature-button:disabled { opacity: .6; cursor: wait; }
+.ml-status { font-size: 13px; color: var(--muted); margin: 0; }
+.plot-legend { display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 13px; margin: 24px 0 12px; }
+.class-zero { color: #15665f; font-weight: 700; }
+.class-one { color: #99491c; font-weight: 700; }
+.plot-help { color: var(--muted); font-size: 13px; }
+.model-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 22px; }
+.model-card { border: 1px solid var(--line); background: #fff; padding: 22px; min-width: 0; }
+.model-card h2 { font-size: 26px; margin-bottom: 6px; }
+.model-card .model-note { font-size: 13px; color: var(--muted); min-height: 3.5em; margin-bottom: 16px; }
+.model-card canvas { width: 100%; height: auto; display: block; }
+.model-scores { display: flex; justify-content: space-between; gap: 10px; font-size: 13px; border-top: 1px solid var(--line); padding-top: 14px; margin: 14px 0 0; }
+.feature-note { border-top: 1px solid var(--line); padding-top: 24px; margin-top: 32px; max-width: 850px; color: var(--muted); font-size: 14px; }
+.feature-note h2 { color: var(--ink); font-size: 28px; }
+.feature-links { display: grid; grid-template-columns: 1fr; gap: 24px; padding: 30px 0; border-top: 1px solid var(--line); }
+.feature-links article { padding: 24px; background: var(--surface); }
+.feature-links h2 { font-size: 28px; }
+.feature-links p { font-size: 15px; }
+@media(max-width:800px) { .ml-fields { grid-template-columns: repeat(2,minmax(0,1fr)); } .model-grid { grid-template-columns: 1fr; } .model-card { padding: 16px; } .model-card .model-note { min-height: 0; } }
+@media(max-width:600px) { .feature-main { padding-top: 30px; } .model-grid,.feature-links { grid-template-columns: 1fr; } .ml-controls { padding: 18px; } .ml-controls details .ml-fields { grid-template-columns: 1fr; } .ml-actions { align-items: flex-start; flex-direction: column; gap: 12px; } .model-card .model-note { min-height: 0; } }

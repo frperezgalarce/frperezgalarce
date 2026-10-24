@@ -1,5 +1,7 @@
 # Optimization playground
 
+The companion [Machine Learning lab](machine-learning.html) compares binary classifiers. Both labs link to each other; the home page also links directly to the ML lab. See [ML-LAB.md](ML-LAB.md) for model details and checks.
+
 Open `playground.html` through a local static server, or visit the same page after publishing this repository to GitHub Pages. There is no build step, external dependency, or backend. The page follows the site's English/Spanish language preference (`?lang=en` / `?lang=es`).
 
 For a local preview:
