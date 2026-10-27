@@ -1,4 +1,5 @@
 import { knowledge, normalize } from './assistant-knowledge.mjs';
+import { readingForFaq, recommendedReading } from './assistant-readings.mjs';
 
 const lang = window.siteLanguage === 'en' ? 'en' : 'es';
 const copy = (es, en) => lang === 'es' ? es : en;
@@ -44,7 +45,7 @@ function initialize(root) {
     let controller;
     let generation = 0;
     const idleStatus = endpoint ? copy('Puedes consultar las FAQ o hacer tu propia pregunta.', 'Browse the FAQs or ask your own question.') : copy('Por ahora están disponibles las FAQ. El chat con IA aún no está activado.', 'FAQs are available now. The AI chat has not been activated yet.');
-    function message(role, text, source) {
+    function message(role, text, source, recommended) {
         const article = document.createElement('article');
         article.className = `chat-message ${role}`;
         const label = document.createElement('strong');
@@ -52,6 +53,24 @@ function initialize(root) {
         const body = document.createElement('p');
         body.textContent = text;
         article.append(label, body);
+        if (recommended) {
+            const section = document.createElement('aside');
+            section.className = 'chat-reading';
+            const heading = document.createElement('strong');
+            heading.textContent = copy('Lectura recomendada', 'Recommended reading');
+            const link = document.createElement('a');
+            link.href = recommended.url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = recommended.title + ' ↗';
+            const citation = document.createElement('p');
+            citation.className = 'reading-citation';
+            citation.textContent = `${recommended.authors} · ${recommended.publication}`;
+            const focus = document.createElement('p');
+            focus.textContent = recommended.focus[lang];
+            section.append(heading, link, citation, focus);
+            article.append(section);
+        }
         $('chat-log').append(article);
         // Bound visible and transmitted history; nothing is saved to browser storage.
         while ($('chat-log').children.length > 30) $('chat-log').firstElementChild.remove();
@@ -64,7 +83,7 @@ function initialize(root) {
     function showFaq(item) {
         if (controller) return;
         message('user', item[lang].q);
-        message('assistant', item[lang].a, copy('FAQ · respuesta de referencia', 'FAQ · reference answer'));
+        message('assistant', item[lang].a, copy('FAQ · respuesta de referencia', 'FAQ · reference answer'), readingForFaq(topic, item.id));
         remember(item[lang].q, item[lang].a);
         $('chat-status').textContent = idleStatus;
     }
@@ -124,7 +143,8 @@ function initialize(root) {
                 throw new Error('service');
             }
             if (typeof data.answer !== 'string' || !data.answer.trim() || data.answer.length > 12000) throw new Error('service');
-            message('assistant', data.answer);
+            // Always derive the reading from our trusted catalog, not response URLs.
+            message('assistant', data.answer, undefined, recommendedReading(topic, question, history, lang));
             remember(question, data.answer);
             if ($('chat-question').value === submittedDraft) $('chat-question').value = '';
             $('chat-status').textContent = idleStatus;

@@ -2,6 +2,16 @@
 
 Two assistants are embedded in `playground.html` (Operations Research) and `machine-learning.html` (Machine Learning), with links on the home page. Each has 20 bilingual FAQ drafts, searchable without AI or a backend. Review the educational text in `assistant-knowledge.mjs` before publishing it as your own reference material. The AI receives four relevant FAQ entries and up to two previous exchanges; it cannot see live lab settings or execute a solver.
 
+## Recommended readings
+
+Every educational FAQ answer and successful AI answer includes a recommended reading with title, authors, publication, a source link, and a Spanish/English focus note. The welcome message and transient error/status messages are not educational answers.
+
+`assistant-readings.mjs` contains nine verified classic books and foundational papers, with an explicit mapping for all 40 FAQs. Readings include Hillier and Lieberman; Nemhauser and Wolsey; Croes (1958); Dijkstra (1959); Hastie, Tibshirani and Friedman; James et al.; Bishop; Pearl; and Hardt, Price and Srebro (2016). Links point to publishers, author pages, conference proceedings or DOIs. Access conditions depend on the linked source.
+
+The Worker always returns a `recommendedReading` object from this catalog, independently of the model's answer. The frontend derives the same recommendation locally, so missing, malformed or model-invented citation URLs cannot suppress or replace it. Free-form questions use subject keywords, FAQ relevance and brief follow-up context; these are suggestions for further study, not claims that a source verifies every sentence of an AI response. The system prompt tells the model to leave bibliography generation to the application. Editorial focus notes are not quotations and do not invent page numbers.
+
+Update the catalog/mappings and tests together when adding topics. Deploy the Worker and publish the static assets for reading changes.
+
 ## Public configuration
 
 Edit `assistant-config.js`:

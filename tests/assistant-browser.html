@@ -16,6 +16,6 @@ window.fetch = async (url, options) => {
         const timer = setTimeout(resolve, 10000);
         options.signal.addEventListener('abort', () => { clearTimeout(timer); reject(new DOMException('Aborted','AbortError')); }, {once:true});
     });
-    return Response.json({answer:'Respuesta de prueba: <img src=x onerror=alert(1)> se muestra como texto, sin ejecutar HTML.'});
+    return Response.json({recommendedReading:{title:'Untrusted title',url:'javascript:alert(1)'},answer:'Respuesta de prueba: <img src=x onerror=alert(1)> se muestra como texto, sin ejecutar HTML.'});
 };
 </script><script type="module" src="../assistant.js"></script></body></html>

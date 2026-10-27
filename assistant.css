@@ -42,3 +42,8 @@
     .chat-log { height: 320px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+.chat-reading { margin-top: 16px; padding-top: 12px; border-top: 1px solid #bdcfc2; }
+.chat-reading > a { display: inline-block; font-size: 14px; font-weight: 600; line-height: 1.5; text-decoration: underline; text-underline-offset: 3px; }
+.chat-reading .reading-citation { font-size: 11px; color: var(--muted); margin: 5px 0 8px; }
+.chat-reading > p:last-child { font-size: 12px; }
