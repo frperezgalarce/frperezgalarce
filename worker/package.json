@@ -1,0 +1,17 @@
+{
+  "name": "tokensforlearning-chat",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test ../tests/assistant.test.mjs",
+    "check": "wrangler deploy --dry-run --outdir dist",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "wrangler": "4.153.0"
+  }
+}

@@ -12,6 +12,9 @@
     <script src="site.js?v=features1" defer></script>
     <script src="playground-engine.js?v=1" defer></script>
     <script src="playground.js?v=1" defer></script>
+    <link rel="stylesheet" href="assistant.css?v=1">
+    <script src="assistant-config.js?v=1" defer></script>
+    <script type="module" src="assistant.js?v=1"></script>
 </head>
 <body class="playground-page">
 <a class="skip-link" href="#main-content" data-es="Saltar al contenido">Skip to content</a>
@@ -22,7 +25,8 @@
         <p class="eyebrow" data-es="Investigación de Operaciones · Aprende experimentando">Operations Research · Learn by doing</p>
         <h1 data-es="Laboratorio de optimización.">Optimization playground.</h1>
         <p data-es="Crea un problema, prueba un algoritmo y explora su solución. Tres problemas clásicos para descubrir cómo pequeñas decisiones cambian un resultado.">Create a problem, try an algorithm, and explore its solution. Three classic problems to discover how small decisions change an outcome.</p>
-    </section>
+    <a class="assistant-jump" href="#learning-assistant" data-es="¿Tienes preguntas? Consulta al asistente ↓">Questions? Ask the assistant ↓</a>
+</section>
     <div class="problem-picker" role="group" aria-label="Problem" id="problem-picker">
         <button type="button" data-problem="tsp" aria-pressed="true"><span class="problem-index">01</span><span data-es="Viajante de comercio">Traveling salesman</span><small data-es="Conecta todas las ciudades">Connect every city</small></button>
         <button type="button" data-problem="nurses" aria-pressed="false"><span class="problem-index">02</span><span data-es="Turnos de enfermería">Nurse scheduling</span><small data-es="Asigna turnos con restricciones">Assign shifts with constraints</small></button>
@@ -55,6 +59,7 @@
         <div><p class="eyebrow" data-es="03 / Comprende el método">03 / Understand the method</p><h2 id="method-title"></h2></div>
         <div><p id="method-description"></p><ul id="method-rules"></ul><p id="method-caveat" class="method-caveat"></p></div>
     </section>
+    <section id="learning-assistant" data-learning-assistant="or"></section>
     <noscript><p>This playground requires JavaScript. / Este laboratorio requiere JavaScript.</p></noscript>
 </main>
 <footer class="site-footer"><div class="wrap"><div><a class="footer-name" href="index.html">Francisco Pérez-Galarce</a><p data-es="Investigación en Machine Learning explicable y justo.">Research in explainable and fair Machine Learning.</p><span>© 2026 Francisco Pérez-Galarce</span></div><div class="footer-links"><a href="teaching.html" data-es="Docencia">Teaching</a><a href="research.html" data-es="Investigación">Research</a><a href="projects.html" data-es="Proyectos aplicados">Applied projects</a></div><div class="footer-links"><a href="https://github.com/frperezgalarce">GitHub ↗</a><a href="links.html" data-es="Contacto">Contact</a></div></div></footer>

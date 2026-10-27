@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Assistant browser test harness</title><link rel="stylesheet" href="../style.css"><link rel="stylesheet" href="../features.css"><link rel="stylesheet" href="../assistant.css"></head>
+<body><main class="wrap"><h1>Assistant test harness</h1><p>Local test responses only. No provider or payment requests are made.</p><label for="scenario">Scenario</label><select id="scenario"><option value="success">Success</option><option value="quota">Quota exhausted</option><option value="error">Service error</option><option value="delay">Delayed response</option></select><p id="test-count">Requests: 0</p><section id="learning-assistant" data-learning-assistant="ml"></section></main>
+<script>
+window.siteLanguage = 'es';
+window.learningAssistantConfig = { apiUrl: 'https://test.invalid/chat', supportUrl: '' };
+const actualFetch = window.fetch;
+let requests = 0;
+window.fetch = async (url, options) => {
+    if (url !== 'https://test.invalid/chat') return actualFetch(url, options);
+    document.getElementById('test-count').textContent = `Requests: ${++requests}`;
+    const scenario = document.getElementById('scenario').value;
+    if (scenario === 'quota') return Response.json({error:'quota_exhausted'}, {status:429});
+    if (scenario === 'error') return Response.json({error:'unavailable'}, {status:503});
+    if (scenario === 'delay') await new Promise((resolve, reject) => {
+        const timer = setTimeout(resolve, 10000);
+        options.signal.addEventListener('abort', () => { clearTimeout(timer); reject(new DOMException('Aborted','AbortError')); }, {once:true});
+    });
+    return Response.json({answer:'Respuesta de prueba: <img src=x onerror=alert(1)> se muestra como texto, sin ejecutar HTML.'});
+};
+</script><script type="module" src="../assistant.js"></script></body></html>

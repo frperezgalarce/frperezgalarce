@@ -1,0 +1,22 @@
+name = "tokensforlearning-chat"
+main = "worker.mjs"
+compatibility_date = "2026-10-26"
+
+[vars]
+CHAT_ENABLED = "false"
+ALLOWED_ORIGINS = "https://frperezgalarce.github.io"
+GROQ_MODEL = "openai/gpt-oss-20b"
+DAILY_REQUEST_LIMIT = "200"
+VISITOR_DAILY_LIMIT = "12"
+MONTHLY_TOKEN_BUDGET = "1000000"
+
+[[durable_objects.bindings]]
+name = "CHAT_QUOTA"
+class_name = "ChatQuota"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["ChatQuota"]
+
+[observability]
+enabled = false
