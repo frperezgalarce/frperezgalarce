@@ -16,7 +16,9 @@ Never add provider credentials to public configuration, HTML, or tracked files.
 
 ## Deploy the Groq proxy
 
-The static website continues to work on GitHub Pages. Deploy `worker/` separately on Cloudflare Workers, using a SQLite-backed Durable Object for shared persistent quotas. A Cloudflare account and a Groq API key are required. No backend is currently deployed by this change.
+The static website runs on GitHub Pages. The backend is deployed at `https://tokensforlearning-chat.tokensforlearning-chat.workers.dev/chat` in the personal Cloudflare account specified in `worker/wrangler.toml`, with AI chat enabled. The Groq key and IP-hashing secret are stored as Cloudflare Worker secrets, never in this repository. A SQLite-backed Durable Object provides shared persistent quotas.
+
+The following steps document redeployment and setup in a new account. For the current deployment, use `npm ci` and `npm run deploy` from `worker/`; existing secrets are retained. To disable AI, set `CHAT_ENABLED = "false"` and redeploy. Clear `apiUrl` to show FAQ-only mode in the browser.
 
 Install Node.js 22 or newer. From `worker/`, install the pinned deployment tools and sign in:
 

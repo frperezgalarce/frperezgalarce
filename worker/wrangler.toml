@@ -1,9 +1,10 @@
 name = "tokensforlearning-chat"
+account_id = "eb2ce29d410ea41f1a6607155f48d96c"
 main = "worker.mjs"
 compatibility_date = "2026-10-26"
 
 [vars]
-CHAT_ENABLED = "false"
+CHAT_ENABLED = "true"
 ALLOWED_ORIGINS = "https://frperezgalarce.github.io"
 GROQ_MODEL = "openai/gpt-oss-20b"
 DAILY_REQUEST_LIMIT = "200"
