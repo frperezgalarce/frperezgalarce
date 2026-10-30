@@ -1,3 +1,4 @@
+import { renderMarkdown } from './assistant-markdown.mjs';
 import { knowledge, normalize } from './assistant-knowledge.mjs';
 import { readingForFaq, recommendedReading } from './assistant-readings.mjs';
 
@@ -12,7 +13,6 @@ function safeUrl(value, local = false) {
     } catch { return ''; }
 }
 const endpoint = safeUrl(config.apiUrl, true);
-const supportUrl = safeUrl(config.supportUrl);
 const root = document.querySelector('[data-learning-assistant]');
 if (root) initialize(root);
 
@@ -38,8 +38,7 @@ function initialize(root) {
                 <form id="chat-form"><label for="chat-question">${copy('Tu pregunta', 'Your question')}</label><textarea id="chat-question" rows="3" maxlength="1500" required aria-describedby="chat-privacy" placeholder="${copy('¿Qué te gustaría comprender?', 'What would you like to understand?')}"></textarea><div class="chat-actions"><small>${copy('Hasta 1.500 caracteres', 'Up to 1,500 characters')}</small><button class="feature-button" type="submit" id="chat-send">${copy('Preguntar', 'Ask')}</button></div></form>
                 <p class="chat-privacy" id="chat-privacy">${copy('Las FAQ se consultan en tu navegador. Al enviar otra pregunta, se comparte con Groq junto con los últimos mensajes. No incluyas datos personales. Las respuestas de IA pueden contener errores.', 'FAQs stay in your browser. Sending another question shares it and recent messages with Groq. Do not include personal data. AI answers can contain errors.')} <a href="https://console.groq.com/docs/your-data" target="_blank" rel="noopener noreferrer">${copy('Privacidad de Groq ↗', 'Groq privacy ↗')}</a></p>
             </div>
-        </div>
-        <div id="assistant-support" class="assistant-support" hidden><div><p class="eyebrow" id="support-name"></p><h3>${copy('Apoya mi trabajo', 'Support my work')}</h3><p>${copy('Si estos recursos te resultan útiles, puedes hacer un aporte voluntario para apoyar mi trabajo y la continuidad de este proyecto educativo.', 'If you find these resources useful, you can make a voluntary contribution to support my work and the continuity of this educational project.')}</p><small>${copy('El aporte no compra consultas ni desbloquea el chat automáticamente.', 'Contributing does not purchase queries or automatically unlock the chat.')}</small></div><a class="feature-button" id="support-link" target="_blank" rel="noopener noreferrer">${copy('Dona tokens ↗', 'Donate tokens ↗')}</a></div>`;
+        </div>`;
     const $ = id => root.querySelector(`#${id}`);
     let history = [];
     let controller;
@@ -50,8 +49,10 @@ function initialize(root) {
         article.className = `chat-message ${role}`;
         const label = document.createElement('strong');
         label.textContent = role === 'user' ? copy('Tú', 'You') : source || copy('Asistente · IA', 'Assistant · AI');
-        const body = document.createElement('p');
-        body.textContent = text;
+        const body = document.createElement('div');
+        body.className = 'chat-body';
+        if (role === 'assistant') body.innerHTML = renderMarkdown(text);
+        else body.textContent = text;
         article.append(label, body);
         if (recommended) {
             const section = document.createElement('aside');
@@ -163,10 +164,5 @@ function initialize(root) {
             }
         }
     });
-    if (supportUrl) {
-        $('support-name').textContent = config.supportName || 'tokensforlearning';
-        $('support-link').href = supportUrl;
-        $('assistant-support').hidden = false;
-    }
     reset();
 }

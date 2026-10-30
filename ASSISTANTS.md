@@ -17,10 +17,6 @@ Update the catalog/mappings and tests together when adding topics. Deploy the Wo
 Edit `assistant-config.js`:
 
 - `apiUrl`: absolute HTTPS Worker URL ending in `/chat`. Empty means FAQ-only mode, explicitly shown in the interface. HTTP is accepted only for localhost development.
-- `supportUrl`: the owner's verified payment URL, currently `https://paypal.me/tokensforlearning`. Empty hides the support card. Only HTTPS URLs without embedded credentials are accepted.
-- `supportName`: initiative name, currently `tokensforlearning`.
-
-The contribution is voluntary support for the author's work and the educational project. It does not buy tokens, guarantee availability, unlock chat, or trigger an API billing upgrade. PayPal receives payments in the owner's account; this repository does not process payments, perform transfers, allocate proceeds, invest funds, or store financial records. Keep private financial arrangements and bookkeeping outside the public repository.
 
 Never add provider credentials to public configuration, HTML, or tracked files.
 
@@ -71,11 +67,11 @@ Both subjects share one durable quota authority. Default limits:
 - 1,000,000 conservative token units per UTC month.
 - 1,500 characters per message, at most four historical messages, at most 32 KiB request body and 1,400 completion tokens per response.
 
-Reservations occur atomically before calling Groq. They count UTF-8 input bytes as token units plus output capacity and a framing allowance, rather than estimating ordinary text at four characters per token. Failed requests are not refunded. These deliberately conservative units are not a measured token balance or a currency-denominated spending limit. Set the provider's own hard spending limit before enabling paid billing, and account separately for hosting charges. Upgrading is manual; donations never change billing settings. The site does not automatically switch to paid usage or rotate accounts to bypass free-tier limits.
+Reservations occur atomically before calling Groq. They count UTF-8 input bytes as token units plus output capacity and a framing allowance, rather than estimating ordinary text at four characters per token. Failed requests are not refunded. These deliberately conservative units are not a measured token balance or a currency-denominated spending limit. Set the provider's own hard spending limit before enabling paid billing, and account separately for hosting charges. Upgrading is manual. The site does not automatically switch to paid usage or rotate accounts to bypass free-tier limits.
 
 CORS checks limit which browser origins can call the endpoint, but are not authentication: non-browser clients can forge Origin. Shared persistent quotas provide the overall cap. IP limits are a basic abuse control, not a guarantee against distributed abuse. Reduce limits or disable chat if needed.
 
-Provider 429 responses, exhausted site budgets, network errors and unconfigured services leave the FAQ available. The interface preserves the unsent/failed question for retry. Replies use `textContent`, so generated HTML and scripts are never executed.
+Provider 429 responses, exhausted site budgets, network errors and unconfigured services leave the FAQ available. The interface preserves the unsent/failed question for retry. Assistant replies render Markdown with a locally bundled markdown-it parser (`html: false`), so raw HTML is displayed as text. Images are disabled and links accept only absolute HTTP(S) URLs without credentials. User messages use `textContent`.
 
 ## Privacy
 
@@ -86,7 +82,7 @@ The Worker stores only usage counters and HMAC-hashed IP identifiers, with a dai
 ## Checks and local preview
 
 ```sh
-node --test tests/assistant.test.mjs
+node --test tests/assistant.test.mjs tests/assistant-markdown.test.mjs
 node tests/ml-engine.test.cjs
 node tests/playground-engine.test.cjs
 python3 -m http.server 8765 --bind 127.0.0.1
@@ -96,6 +92,6 @@ Open `http://127.0.0.1:8765/machine-learning.html?lang=es#learning-assistant` or
 
 For local Worker integration, use `npx wrangler dev`, put secrets in ignored `worker/.dev.vars`, allow `http://127.0.0.1:8765`, and temporarily set the public `apiUrl` to `http://127.0.0.1:8787/chat`. Do not publish localhost settings.
 
-Official references: [Groq model catalog](https://console.groq.com/docs/models), [Groq API compatibility](https://console.groq.com/docs/openai), [Groq spend limits](https://console.groq.com/docs/spend-limits), [Cloudflare SQLite-backed storage](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/), [PayPal.Me in Chile](https://www.paypal.com/cl/cshelp/article/%C2%BFqu%C3%A9-es-paypalme-help432).
+Official references: [Groq model catalog](https://console.groq.com/docs/models), [Groq API compatibility](https://console.groq.com/docs/openai), [Groq spend limits](https://console.groq.com/docs/spend-limits), [Cloudflare SQLite-backed storage](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/).
 
-For browser checks, open `tests/assistant-browser.html` through the local server. This explicitly labeled harness simulates success, quota exhaustion, service errors and delayed responses without contacting Groq. Verify FAQ clicks leave Requests at zero, HTML-like output stays literal, failed questions remain editable, and clearing an in-flight conversation cancels the request.
+For browser checks, open `tests/assistant-browser.html` through the local server. This explicitly labeled harness simulates success, quota exhaustion, service errors and delayed responses without contacting Groq. Verify FAQ clicks leave Requests at zero, Markdown renders with readable headings, lists, code and tables, HTML-like output stays literal, failed questions remain editable, and clearing an in-flight conversation cancels the request.
