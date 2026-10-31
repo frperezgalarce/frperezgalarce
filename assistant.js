@@ -1,6 +1,8 @@
-import { renderMarkdown } from './assistant-markdown.mjs';
+import { renderMarkdown } from './assistant-markdown.mjs?v=math-resources-quiz3';
 import { knowledge, normalize } from './assistant-knowledge.mjs';
-import { readingForFaq, recommendedReading } from './assistant-readings.mjs';
+import { resourcesForFaq, recommendedResources } from './assistant-resources.mjs?v=math-resources-quiz3';
+import { quizForFaq, recommendedQuiz } from './assistant-quiz.mjs?v=math-resources-quiz3';
+import { createQuiz } from './assistant-quiz-ui.mjs?v=math-resources-quiz3';
 
 const lang = window.siteLanguage === 'en' ? 'en' : 'es';
 const copy = (es, en) => lang === 'es' ? es : en;
@@ -44,7 +46,7 @@ function initialize(root) {
     let controller;
     let generation = 0;
     const idleStatus = endpoint ? copy('Puedes consultar las FAQ o hacer tu propia pregunta.', 'Browse the FAQs or ask your own question.') : copy('Por ahora están disponibles las FAQ. El chat con IA aún no está activado.', 'FAQs are available now. The AI chat has not been activated yet.');
-    function message(role, text, source, recommended) {
+    function message(role, text, source, recommended, quiz) {
         const article = document.createElement('article');
         article.className = `chat-message ${role}`;
         const label = document.createElement('strong');
@@ -54,22 +56,39 @@ function initialize(root) {
         if (role === 'assistant') body.innerHTML = renderMarkdown(text);
         else body.textContent = text;
         article.append(label, body);
-        if (recommended) {
+        if (quiz?.length === 5) article.append(createQuiz(quiz, lang));
+        if (recommended?.length) {
             const section = document.createElement('aside');
             section.className = 'chat-reading';
             const heading = document.createElement('strong');
-            heading.textContent = copy('Lectura recomendada', 'Recommended reading');
-            const link = document.createElement('a');
-            link.href = recommended.url;
-            link.target = '_blank';
-            link.rel = 'noopener noreferrer';
-            link.textContent = recommended.title + ' ↗';
-            const citation = document.createElement('p');
-            citation.className = 'reading-citation';
-            citation.textContent = `${recommended.authors} · ${recommended.publication}`;
-            const focus = document.createElement('p');
-            focus.textContent = recommended.focus[lang];
-            section.append(heading, link, citation, focus);
+            heading.textContent = copy('Recursos recomendados', 'Recommended resources');
+            const list = document.createElement('ul');
+            list.className = 'reading-list';
+            for (const resource of recommended) {
+                const url = safeUrl(resource.url);
+                if (!url) continue;
+                const item = document.createElement('li');
+                const kind = document.createElement('span');
+                kind.className = 'reading-kind';
+                kind.textContent = resource.type === 'video' ? copy('Video · YouTube · en inglés', 'Video · YouTube · English')
+                    : resource.archive === 'arXiv' ? copy('Artículo · versión en arXiv · acceso abierto', 'Paper · arXiv manuscript · open access')
+                    : resource.access === 'open' ? copy('Lectura · acceso abierto', 'Reading · open access')
+                    : copy('Lectura de referencia', 'Reference reading');
+                const link = document.createElement('a');
+                link.href = url;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.textContent = resource.title + ' ↗';
+                const citation = document.createElement('p');
+                citation.className = 'reading-citation';
+                citation.textContent = `${resource.authors} · ${resource.publication}`;
+                const focus = document.createElement('p');
+                focus.className = 'reading-focus';
+                focus.textContent = resource.focus[lang];
+                item.append(kind, link, citation, focus);
+                list.append(item);
+            }
+            section.append(heading, list);
             article.append(section);
         }
         $('chat-log').append(article);
@@ -84,7 +103,7 @@ function initialize(root) {
     function showFaq(item) {
         if (controller) return;
         message('user', item[lang].q);
-        message('assistant', item[lang].a, copy('FAQ · respuesta de referencia', 'FAQ · reference answer'), readingForFaq(topic, item.id));
+        message('assistant', item[lang].a, copy('FAQ · respuesta de referencia', 'FAQ · reference answer'), resourcesForFaq(topic, item.id), quizForFaq(topic, item.id));
         remember(item[lang].q, item[lang].a);
         $('chat-status').textContent = idleStatus;
     }
@@ -144,8 +163,8 @@ function initialize(root) {
                 throw new Error('service');
             }
             if (typeof data.answer !== 'string' || !data.answer.trim() || data.answer.length > 12000) throw new Error('service');
-            // Always derive the reading from our trusted catalog, not response URLs.
-            message('assistant', data.answer, undefined, recommendedReading(topic, question, history, lang));
+            // Always derive resources from our trusted catalog, not response URLs.
+            message('assistant', data.answer, undefined, recommendedResources(topic, question, history, lang), recommendedQuiz(topic, question, history, lang));
             remember(question, data.answer);
             if ($('chat-question').value === submittedDraft) $('chat-question').value = '';
             $('chat-status').textContent = idleStatus;

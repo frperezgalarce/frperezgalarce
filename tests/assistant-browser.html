@@ -1,8 +1,10 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Assistant browser test harness</title><link rel="stylesheet" href="../style.css"><link rel="stylesheet" href="../features.css"><link rel="stylesheet" href="../assistant.css"></head>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Assistant browser test harness</title><link rel="stylesheet" href="../style.css"><link rel="stylesheet" href="../features.css"><link rel="stylesheet" href="../assistant.css?v=math-resources-quiz3"></head>
 <body><main class="wrap"><h1>Assistant test harness</h1><p>Local test responses only. No provider requests are made.</p><label for="scenario">Scenario</label><select id="scenario"><option value="success">Success</option><option value="quota">Quota exhausted</option><option value="error">Service error</option><option value="delay">Delayed response</option></select><p id="test-count">Requests: 0</p><section id="learning-assistant" data-learning-assistant="ml"></section></main>
 <script>
-window.siteLanguage = 'es';
+const params = new URLSearchParams(location.search);
+window.siteLanguage = params.get('lang') === 'en' ? 'en' : 'es';
+if (params.get('topic') === 'or') document.getElementById('learning-assistant').dataset.learningAssistant = 'or';
 window.learningAssistantConfig = { apiUrl: 'https://test.invalid/chat' };
 const actualFetch = window.fetch;
 let requests = 0;
@@ -16,6 +18,6 @@ window.fetch = async (url, options) => {
         const timer = setTimeout(resolve, 10000);
         options.signal.addEventListener('abort', () => { clearTimeout(timer); reject(new DOMException('Aborted','AbortError')); }, {once:true});
     });
-    return Response.json({recommendedReading:{title:'Untrusted title',url:'javascript:alert(1)'},answer: '# Explicación de prueba\n\nUn concepto **importante** con *énfasis* y `código`.\n\n1. Define el problema.\n2. Compara resultados.\n   - Revisa los supuestos.\n\n> Una heurística no garantiza optimalidad.\n\n```python\nprint("Hola")\n```\n\n| Método | Garantía |\n| --- | --- |\n| Exacto | Óptimo |\n| Heurística | Aproximación |\n\n[Lectura](https://example.com)\n\n<img src=x onerror=alert(1)> se muestra como texto. [Enlace inseguro](javascript:alert(1))' });
+    return Response.json({recommendedReading:{title:'Untrusted title',url:'javascript:alert(1)'},answer: 'Inline: \\(p(y=1 \\mid x)=\\frac{1}{1+e^{-w^Tx}}\\).\n\n\\[\n\\begin{aligned}\n\\min_x &\\quad c^T x \\\\\n\\text{subject to} &\\quad Ax \\le b\n\\end{aligned}\n\\]\n\nDollar math: $x_i^2$; costs $5 and $10. Invalid math: \\(\\invalid{x}\\).\n\n# Explicación de prueba\n\nUn concepto **importante** con *énfasis* y `código`.\n\n1. Define el problema.\n2. Compara resultados.\n   - Revisa los supuestos.\n\n> Una heurística no garantiza optimalidad.\n\n```python\nprint("Hola")\n```\n\n| Método | Garantía |\n| --- | --- |\n| Exacto | Óptimo |\n| Heurística | Aproximación |\n\n[Lectura](https://example.com)\n\n<img src=x onerror=alert(1)> se muestra como texto. [Enlace inseguro](javascript:alert(1))' });
 };
-</script><script type="module" src="../assistant.js"></script></body></html>
+</script><script type="module" src="../assistant.js?v=math-resources-quiz3"></script></body></html>

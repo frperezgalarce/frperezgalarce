@@ -1,3 +1,5 @@
+@import url("./vendor/katex/katex.min.css");
+
 .learning-assistant { border-top: 1px solid var(--line); margin-top: 56px; padding: 40px 0 12px; }
 .assistant-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; }
 .assistant-heading h2 { font-size: clamp(28px, 3.5vw, 40px); max-width: 720px; margin-bottom: 12px; line-height: 1.2; }
@@ -60,6 +62,29 @@
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 .chat-reading { margin-top: 16px; padding-top: 12px; border-top: 1px solid #bdcfc2; }
-.chat-reading > a { display: inline-block; font-size: 14px; font-weight: 600; line-height: 1.5; text-decoration: underline; text-underline-offset: 3px; }
+.reading-list a { display: inline-block; font-size: 14px; font-weight: 600; line-height: 1.5; text-decoration: underline; text-underline-offset: 3px; }
 .chat-reading .reading-citation { font-size: 11px; color: var(--muted); margin: 5px 0 8px; }
-.chat-reading > p:last-child { font-size: 12px; }
+.chat-reading .reading-focus { font-size: 12px; }
+
+.reading-list { list-style: none; padding: 0; margin: 0; }
+.reading-list li + li { border-top: 1px solid #bdcfc2; margin-top: 12px; padding-top: 12px; }
+.reading-kind { display: block; color: var(--muted); font-size: 11px; margin: 7px 0 4px; }
+.chat-math { overflow-wrap: normal; }
+.chat-math-display { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 4px 2px; margin: 12px 0; }
+.chat-math-display .katex-display { margin: 0; text-align: left; }
+.chat-math-display .katex-display > .katex { text-align: left; }
+.chat-body .math-fallback { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+.chat-quiz { margin-top: 16px; border-top: 1px solid #bdcfc2; padding-top: 12px; }
+.chat-log:has(.chat-quiz[open]) { height: min(65vh, 640px); min-height: 320px; }
+.chat-quiz summary { color: var(--accent); font-size: 14px; font-weight: 650; cursor: pointer; }
+.chat-quiz summary:focus-visible, .chat-quiz button:focus-visible { outline: 3px solid #ac7841; outline-offset: 3px; }
+.chat-quiz > p { font-size: 12px; color: var(--muted); margin: 8px 0 12px; }
+.chat-quiz fieldset { min-width: 0; border: 1px solid #bdcfc2; padding: 10px 12px; margin: 12px 0; }
+.chat-quiz legend { font-size: 13px; line-height: 1.5; padding: 0 4px; }
+.chat-quiz label { display: inline-flex; align-items: center; gap: 7px; margin: 4px 16px 4px 0; min-height: 32px; cursor: pointer; }
+.chat-quiz input[type="radio"] { width: 17px; height: 17px; margin: 0; padding: 0; accent-color: var(--accent); }
+.chat-quiz .quiz-feedback { border-top: 1px solid #bdcfc2; padding-top: 8px; margin-top: 8px; font-size: 12px; }
+.chat-quiz .quiz-result { font-size: 13px; font-weight: 650; margin: 10px 0; }
+.chat-quiz button { border: 1px solid var(--accent); background: var(--accent); color: white; padding: 9px 12px; font: inherit; font-size: 13px; cursor: pointer; }
+.chat-quiz [hidden] { display: none; }

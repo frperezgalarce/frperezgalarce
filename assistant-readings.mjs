@@ -67,18 +67,22 @@ const keywords = {
     ml: [ ['knn', /\b(knn|k nn|nearest neighbou?rs?|vecinos)\b/], ['fairness', /\b(fairness|fair|equidad|justo|justicia|equalized odds)\b/], ['explain', /\b(causal\w*|interpret\w*|explicabilidad|explainability|contrafactual\w*)\b/], ['logistic', /\b(logistic\w*|logistica)\b/], ['tree', /\b(tree|trees|arbol\w*|cart)\b/], ['bayes', /\b(bayes|gaussian|gaussiano)\b/], ['regularization', /\b(regulariz\w*|ridge|l2)\b/], ['cv', /\b(cross validation|validacion cruzada)\b/], ['overfit', /\b(overfit\w*|sobreajuste)\b/], ['leakage', /\b(leakage|fuga)\b/], ['xor', /\bxor\b/], ['precision', /\b(precision|recall|sensibilidad)\b/] ]
 };
 
-export function recommendedReading(topic, question, history = [], language = 'es') {
+export function recommendedFaqId(topic, question, history = [], language = 'es') {
     const normalized = normalize(question);
-    const matched = keywords[topic]?.find(([, pattern]) => pattern.test(normalized));
-    if (matched) return readingForFaq(topic, matched[0]);
     const exact = knowledge[topic]?.find(item => normalize(item[language].q) === normalized);
-    if (exact) return readingForFaq(topic, exact.id);
+    if (exact) return exact.id;
+    const matched = keywords[topic]?.find(([, pattern]) => pattern.test(normalized));
+    if (matched) return matched[0];
     // Brief follow-ups inherit the last question's subject, not the model's answer text.
     const previous = [...history].reverse().find(m => m.role === 'user')?.content || '';
     if (previous && /^(why|por que|how|como|explica\w*|explain|can you|puedes|dame|give|otro|another|more|mas|y )\b/.test(normalized)) {
         const priorMatch = keywords[topic]?.find(([, pattern]) => pattern.test(normalize(previous)));
-        if (priorMatch) return readingForFaq(topic, priorMatch[0]);
+        if (priorMatch) return priorMatch[0];
     }
     const best = relevantFaqs(topic, question, language)[0];
-    return readingForFaq(topic, best?.id);
+    return best?.id;
+}
+
+export function recommendedReading(topic, question, history = [], language = 'es') {
+    return readingForFaq(topic, recommendedFaqId(topic, question, history, language));
 }

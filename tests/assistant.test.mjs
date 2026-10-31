@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import worker, { ChatQuota, validateInput, buildMessages, reserveQuota, reservationSize } from '../worker/worker.mjs';
 import { knowledge } from '../assistant-knowledge.mjs';
 import { readingCatalog, faqReadings, readingForFaq, recommendedReading } from '../assistant-readings.mjs';
+import { resourceCatalog, resourcesForFaq, recommendedResources } from '../assistant-resources.mjs';
 
 const valid = { topic: 'or', language: 'es', message: '¿Qué garantiza 2-opt?', history: [] };
 const limits = { dailyRequests: 3, visitorDaily: 2, monthlyTokens: 1000 };
@@ -104,6 +105,7 @@ test('upstream handling: grounded payload, safe errors, quota and no secret leak
         const body = await result.json();
         assert.match(body.answer,/heurística/);
         assert.equal(body.recommendedReading.id, 'croes');
+        assert.deepEqual(body.recommendedResources.map(item => item.id), ['croes', 'optimization', 'combinatorial']);
         assert.equal(body.recommendedReading.url, 'https://doi.org/10.1287/opre.6.6.791');
         const blocked = {...env, CHAT_QUOTA:{...env.CHAT_QUOTA,get:()=>({fetch:async()=>Response.json({allowed:false})})}};
         assert.equal((await worker.fetch(request(),blocked)).status,429);
@@ -119,6 +121,36 @@ test('upstream handling: grounded payload, safe errors, quota and no secret leak
         globalThis.fetch = async () => Response.json({choices:[]});
         assert.equal((await worker.fetch(request(),env)).status,503);
     } finally { globalThis.fetch = original; }
+});
+
+test('all FAQs offer Ivy League YouTube and open resources with bilingual guidance', () => {
+    const used = new Set();
+    for (const [topic, items] of Object.entries(knowledge)) {
+        for (const item of items) {
+            const resources = resourcesForFaq(topic, item.id);
+            assert.ok(resources.length >= 2 && resources.length <= 3);
+            assert.equal(new Set(resources.map(r => r.url)).size, resources.length);
+            assert.ok(resources.some(r => r.access === 'open'));
+            assert.equal(resources.filter(r => r.type === 'video').length, 1);
+            for (const resource of resources) {
+                used.add(resource.id);
+                assert.ok(resource.title && resource.authors && resource.publication && resource.focus.es && resource.focus.en);
+                assert.equal(new URL(resource.url).protocol, 'https:');
+                if (resource.type === 'video') {
+                    assert.equal(new URL(resource.url).hostname, 'www.youtube.com');
+                    assert.ok(['Harvard University', 'University of Pennsylvania'].includes(resource.institution));
+                    assert.ok(resource.sourceUrl);
+                }
+            }
+            for (const language of ['en', 'es']) {
+                assert.deepEqual(recommendedResources(topic, item[language].q, [], language), resources);
+            }
+        }
+    }
+    for (const id of Object.keys(resourceCatalog)) assert.ok(used.has(id), `Unused resource: ${id}`);
+    assert.deepEqual(recommendedResources('or', 'Give me another example', [{ role: 'user', content: 'Explain Dijkstra' }], 'en'), resourcesForFaq('or', 'path'));
+    const prompt = buildMessages(valid)[0].content;
+    assert.ok(prompt.includes('\\( ... \\)') && prompt.includes('\\[ ... \\]'));
 });
 
 

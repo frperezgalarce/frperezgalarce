@@ -35,3 +35,44 @@ test('handles ordinary bilingual text and incomplete Markdown', () => {
     }
     assert.match(renderMarkdown('Line one\nLine two'), /<br>/);
 });
+
+test('renders all four LaTeX delimiters with accessible math', () => {
+    for (const formula of [String.raw`\(x_i^2 + \frac{1}{2}\)`, '$x_i^2$', '$2$', '$2 x + 1$', String.raw`\[\sum_{i=1}^{n} x_i\]`, '$$x^2$$']) {
+        const html = renderMarkdown(formula);
+        assert.match(html, /class="katex"/);
+        assert.match(html, /<math /);
+        assert.doesNotMatch(html, /math-fallback/);
+    }
+    const html = renderMarkdown(String.raw`Before.
+
+\[
+\begin{aligned}
+\min_x &\quad c^T x \\
+\text{subject to} &\quad Ax \le b
+\end{aligned}
+\]
+
+After **the equation**.`);
+    assert.match(html, /<div class="chat-math chat-math-display">/);
+    assert.match(html, /<strong>the equation<\/strong>/);
+    assert.doesNotMatch(html, /math-fallback/);
+});
+
+test('math coexists with lists, blockquotes, tables, code and currency', () => {
+    assert.match(renderMarkdown(String.raw`- Probability \(p(y=1)\)`), /<li>Probability <span class="chat-math">/);
+    assert.match(renderMarkdown('> $$\nx^2\n$$'), /<blockquote>\n<div class="chat-math/);
+    assert.match(renderMarkdown('| Value |\n| --- |\n| $x_i$ |'), /<td><span class="chat-math/);
+    for (const text of ['`$x$`', '```latex\n\\[x^2\\]\n```', '    $x^2$', 'Costs $5 and $10 today.', String.raw`Escaped \$x\$`, '$ incomplete', String.raw`\(unfinished`]) {
+        assert.doesNotMatch(renderMarkdown(text), /class="katex/);
+    }
+});
+
+test('invalid and adversarial math falls back safely without breaking surrounding text', () => {
+    for (const formula of [String.raw`\invalid{<img src=x onerror=alert(1)>}`, String.raw`\frac{`, String.raw`\def\x{\x}\x`, String.raw`\href{javascript:alert(1)}{click}`, String.raw`\includegraphics{https://example.com/tracker}`, String.raw`\htmlClass{evil}{x}`]) {
+        const html = renderMarkdown(`Before \\(${formula}\\) after **safe**.`);
+        assert.doesNotMatch(html, /<(?:script|img|iframe)\b|href="javascript:|class="evil"/);
+        assert.match(html, /<strong>safe<\/strong>/);
+    }
+    assert.doesNotMatch(renderMarkdown(String.raw`\(\gdef\foo{1}\foo\) then \(\foo\)`), /undefined/);
+    assert.match(renderMarkdown(String.raw`\(\foo\)`), /math-fallback/);
+});

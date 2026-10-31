@@ -2,15 +2,29 @@
 
 Two assistants are embedded in `playground.html` (Operations Research) and `machine-learning.html` (Machine Learning), with links on the home page. Each has 20 bilingual FAQ drafts, searchable without AI or a backend. Review the educational text in `assistant-knowledge.mjs` before publishing it as your own reference material. The AI receives four relevant FAQ entries and up to two previous exchanges; it cannot see live lab settings or execute a solver.
 
-## Recommended readings
+## Recommended resources
 
-Every educational FAQ answer and successful AI answer includes a recommended reading with title, authors, publication, a source link, and a Spanish/English focus note. The welcome message and transient error/status messages are not educational answers.
+Every educational FAQ and successful AI answer offers two or three curated resources with titles, authors/instructors, source links and Spanish/English focus notes. The welcome message and transient error/status messages have no recommendations.
 
-`assistant-readings.mjs` contains nine verified classic books and foundational papers, with an explicit mapping for all 40 FAQs. Readings include Hillier and Lieberman; Nemhauser and Wolsey; Croes (1958); Dijkstra (1959); Hastie, Tibshirani and Friedman; James et al.; Bishop; Pearl; and Hardt, Price and Srebro (2016). Links point to publishers, author pages, conference proceedings or DOIs. Access conditions depend on the linked source.
+`assistant-readings.mjs` retains the nine classic reference readings and explicit mappings for all 40 FAQs. `assistant-resources.mjs` adds 14 resources: six YouTube lectures/course collections, seven open-access papers/manuscripts and one freely available textbook. YouTube recommendations are restricted to Ivy League teaching: Harvard CS50 AI (search, optimization, learning, neural networks and uncertainty) and University of Pennsylvania probability lectures. MIT and Stanford videos are excluded. Videos are labeled as English; articles and books are not institution-restricted.
 
-The Worker always returns a `recommendedReading` object from this catalog, independently of the model's answer. The frontend derives the same recommendation locally, so missing, malformed or model-invented citation URLs cannot suppress or replace it. Free-form questions use subject keywords, FAQ relevance and brief follow-up context; these are suggestions for further study, not claims that a source verifies every sentence of an AI response. The system prompt tells the model to leave bibliography generation to the application. Editorial focus notes are not quotations and do not invent page numbers.
+Open resources include arXiv manuscripts on combinatorial optimization, cross-validation, interpretability, fairness and Monte Carlo, JMLR articles on hyperparameter search and feature selection, and Boyd and Vandenberghe’s author-hosted textbook. Advanced extensions are labeled in their focus notes; arXiv entries are identified as manuscripts, not presented as proof of peer review. Links were verified on 2026-10-30 against primary course/author pages and publication records. Each video has a `sourceUrl` documenting its provenance.
 
-Update the catalog/mappings and tests together when adding topics. Deploy the Worker and publish the static assets for reading changes.
+The Worker returns `recommendedResources` plus the legacy `recommendedReading`. The frontend derives resources independently from the same trusted catalog, so missing, malformed or model-invented URLs cannot replace them. FAQ selection, subject keywords and brief follow-up context choose the relevant set. These are suggestions for further study, not citations verifying every sentence of an AI answer. The prompt delegates bibliography generation to the application. Editorial focus notes are not quotations or invented page references.
+
+Update catalogs/mappings and tests together. Deploy the Worker and publish the static assets to release changes.
+
+## Markdown and equations
+
+Assistant answers support headings, lists, tables, quotes, code, safe links and locally bundled KaTeX equations. Use `\( ... \)` or `$ ... $` (without inner edge spaces for dollar delimiters) for inline math; use `\[ ... \]` or `$$ ... $$` for display math. Multiline display equations support `aligned` environments. The Worker requests LaTeX delimiters and plain-language symbol explanations. Code blocks/spans, escaped dollars and ordinary currency remain literal.
+
+Math is parsed before Markdown escapes and emphasis. KaTeX provides visual HTML and accessible MathML; wide display equations scroll within the answer. Invalid or unsupported formulas fall back to escaped source text. HTML, images, unsafe links, trusted TeX extensions and unbounded macro expansion remain disabled. The KaTeX module, CSS and fonts are served locally; see `vendor/README.md` for the pinned version and integrity hash.
+
+## Optional five-question trivia
+
+Each educational answer includes a collapsed, optional five-question true/false quiz, placed before the recommended resources. `assistant-quiz.mjs` contains 40 bilingual statements grounded in the FAQ content. The answer’s topic selects the first question and four related concepts; the explanation for each item reuses its FAQ answer. Free-form questions use the same topic matching as recommendations. These quizzes test the topic and related fundamentals, not arbitrary model-generated claims.
+
+`assistant-quiz-ui.mjs` provides labeled radio groups, requires all five responses, shows a score and per-question corrections, and supports retry and collapse. Quiz answers stay in page memory and never enter model history or trigger provider calls. Clearing the conversation removes quiz state. Welcome/error messages have no quizzes. Run `node --test tests/assistant-quiz.test.mjs` and use the browser harness to check expand, incomplete submission, scoring, retry and clear in both languages.
 
 ## Public configuration
 
@@ -82,7 +96,7 @@ The Worker stores only usage counters and HMAC-hashed IP identifiers, with a dai
 ## Checks and local preview
 
 ```sh
-node --test tests/assistant.test.mjs tests/assistant-markdown.test.mjs
+node --test tests/assistant.test.mjs tests/assistant-markdown.test.mjs tests/assistant-quiz.test.mjs
 node tests/ml-engine.test.cjs
 node tests/playground-engine.test.cjs
 python3 -m http.server 8765 --bind 127.0.0.1
@@ -94,4 +108,6 @@ For local Worker integration, use `npx wrangler dev`, put secrets in ignored `wo
 
 Official references: [Groq model catalog](https://console.groq.com/docs/models), [Groq API compatibility](https://console.groq.com/docs/openai), [Groq spend limits](https://console.groq.com/docs/spend-limits), [Cloudflare SQLite-backed storage](https://developers.cloudflare.com/durable-objects/api/sqlite-storage-api/).
 
-For browser checks, open `tests/assistant-browser.html` through the local server. This explicitly labeled harness simulates success, quota exhaustion, service errors and delayed responses without contacting Groq. Verify FAQ clicks leave Requests at zero, Markdown renders with readable headings, lists, code and tables, HTML-like output stays literal, failed questions remain editable, and clearing an in-flight conversation cancels the request.
+For browser checks, open `tests/assistant-browser.html` through the local server. This explicitly labeled harness simulates success, quota exhaustion, service errors and delayed responses without contacting Groq. Verify FAQ clicks leave Requests at zero, Markdown renders with readable headings, lists, code, tables, inline/display equations and aligned derivations, HTML-like output stays literal, failed questions remain editable, and clearing an in-flight conversation cancels the request.
+
+Use `tests/assistant-browser.html?lang=en&topic=or` to check English and Operations Research. Confirm resource cards include Ivy League YouTube links and open resources, arXiv manuscripts are labeled, code and currency stay literal, malformed math remains readable, and formulas fit a narrow viewport.

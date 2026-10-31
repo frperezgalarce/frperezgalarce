@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test ../tests/assistant.test.mjs ../tests/assistant-markdown.test.mjs",
+    "test": "node --test ../tests/assistant.test.mjs ../tests/assistant-markdown.test.mjs ../tests/assistant-quiz.test.mjs",
     "check": "wrangler deploy --dry-run --outdir dist",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy"
